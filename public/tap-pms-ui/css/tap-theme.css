@@ -1,0 +1,937 @@
+/* Group TAP formal theme: navy + brass, flat panels, loaded after style.css */
+@font-face { font-family: 'Inter'; src: url('../vendor/fonts/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+:root { --navy: #12263f; --navy-2: #1d3a5f; --brass: #b08a2e; --line: #d3dae3; --ink: #1d2733; --mist: #f2f4f7; }
+body { font-family: 'Inter', system-ui, sans-serif !important; background: var(--mist) !important; color: var(--ink); }
+h4, h5, h6, .fw-bold { letter-spacing: -0.005em; }
+.sidebar { background: var(--navy) !important; border-right: 3px solid var(--brass); }
+.sidebar .nav-link { color: #b9c5d6 !important; border-radius: 2px !important; border-left: 3px solid transparent; font-size: .9rem; }
+.sidebar .nav-link:hover, .sidebar .nav-link.active { background: var(--navy-2) !important; color: #fff !important; border-left-color: var(--brass); }
+header.navbar { border-bottom: 2px solid var(--navy) !important; }
+.card { border: 1px solid var(--line) !important; border-radius: 4px !important; box-shadow: none !important; }
+.shadow, .shadow-sm { box-shadow: none !important; }
+.rounded-3 { border-radius: 3px !important; }
+.card-header { background: #fff !important; border-bottom: 1px solid var(--line) !important; font-weight: 600; }
+.table thead th, .table-light { background: #e9edf2 !important; color: #3b4d63; font-size: .7rem !important; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; border-bottom: 2px solid var(--navy) !important; }
+.table-dark, tfoot.table-dark { --bs-table-bg: var(--navy); --bs-table-color: #fff; }
+.table-hover > tbody > tr:hover > * { background: #f6f8fb; }
+.btn { border-radius: 3px !important; font-weight: 600; }
+.btn-primary { background: var(--navy) !important; border-color: var(--navy) !important; }
+.btn-primary:hover { background: var(--navy-2) !important; }
+.btn-outline-primary { color: var(--navy) !important; border-color: var(--navy) !important; }
+.btn-outline-primary:hover { background: var(--navy) !important; color: #fff !important; }
+.text-primary { color: var(--navy) !important; }
+.form-control, .form-select { border-radius: 3px !important; border-color: #b9c3d0; }
+.form-control:focus, .form-select:focus { border-color: var(--navy); box-shadow: 0 0 0 .2rem rgba(18,38,63,.15); }
+.badge { border-radius: 2px !important; font-weight: 600; letter-spacing: .02em; }
+.badge-soft-primary { background: #e3eaf3 !important; color: var(--navy) !important; }
+.modal-content { border-radius: 4px !important; }
+.modal-header.bg-dark { background: var(--navy) !important; border-bottom: 3px solid var(--brass); }
+@media print {
+body { background: #fff !important; }
+.table thead th { background: #fff !important; border-bottom: 2px solid #000 !important; }
+}
+/* ===== TAP console layout: masthead + module ribbon + page bar + action rail (no sidebar) ===== */
+:root { --paper: #fbfaf7; --brass-soft: #f1e8d0; }
+.masthead { background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .6rem 1.5rem; border-bottom: 3px solid var(--brass); }
+.masthead-brand { display: flex; align-items: center; gap: .75rem; }
+.masthead-right { display: flex; align-items: center; gap: 1rem; }
+.user-chip { display: flex; align-items: center; gap: .6rem; padding-left: 1rem; border-left: 1px solid #2f4b72; font-size: .82rem; }
+.role-label { font-size: .62rem; letter-spacing: .12em; color: var(--brass); font-weight: 700; }
+.masthead .badge-soft-primary, .masthead .badge-soft-success { background: var(--brass-soft) !important; color: var(--navy) !important; }
+.btn-brass { background: transparent; color: #fff; border: 1px solid var(--brass) !important; }
+.btn-brass:hover { background: var(--brass); color: var(--navy); }
+.ribbon { background: var(--paper); border-bottom: 1px solid var(--line); padding: 0 1.5rem; overflow-x: auto; }
+.ribbon-groups { display: flex; align-items: stretch; }
+.ribbon-group { padding: .5rem 1.25rem .25rem; border-right: 1px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
+.ribbon-group:first-child { padding-left: 0; }
+.ribbon-items { display: flex; gap: .25rem; }
+.ribbon .nav-link { display: flex; flex-direction: column; align-items: center; gap: .15rem; min-width: 92px; padding: .45rem .75rem; color: #3b4d63; border-radius: 3px; border-bottom: 3px solid transparent; font-size: .74rem; font-weight: 600; text-align: center; white-space: nowrap; }
+.ribbon .nav-link i { font-size: 1.25rem; color: var(--navy-2); }
+.ribbon .nav-link:hover { background: #eef1f5; color: var(--navy); }
+.ribbon .nav-link.active { background: #fff; color: var(--navy); border-bottom-color: var(--brass); box-shadow: 0 1px 0 #fff; }
+.ribbon .nav-link.active i { color: var(--brass); }
+.pagebar { display: flex; align-items: flex-end; justify-content: space-between; padding: 1rem 1.5rem .75rem; max-width: 1480px; width: 100%; margin: 0 auto; }
+.pagebar h1 { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin: 0; }
+.crumb { font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: #8794a6; }
+.crumb i { font-size: .6rem; }
+.pagebar-date { font-size: .8rem; color: #5b6b80; border-left: 3px solid var(--brass); padding-left: .75rem; }
+.workspace { padding: 0 1.5rem 1.5rem; max-width: 1480px; width: 100%; margin: 0 auto; }
+/* KPI strip */
+.kpi-strip { display: flex; flex-wrap: wrap; background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--navy); border-radius: 3px; }
+.kpi { flex: 1 1 180px; padding: .8rem 1.1rem; border-right: 1px solid var(--line); }
+.kpi:last-child { border-right: 0; }
+.kpi-label { font-size: .64rem; text-transform: uppercase; letter-spacing: .09em; color: #6b7a8f; font-weight: 700; }
+.kpi-value { font-size: 1.45rem; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.kpi-sub { font-size: .7rem; color: #6b7a8f; font-weight: 500; }
+.kpi-accent { background: var(--brass-soft); }
+/* Right action rail */
+.rail { display: flex; flex-direction: column; gap: .75rem; }
+.rail-card { background: #fff; border: 1px solid var(--line); border-radius: 3px; padding: .75rem .9rem; }
+.rail-title { font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; color: var(--navy); border-bottom: 2px solid var(--brass); padding-bottom: .4rem; margin-bottom: .35rem; }
+.rail-row { display: flex; justify-content: space-between; align-items: center; padding: .38rem 0; font-size: .8rem; color: #3b4d63; border-bottom: 1px dashed #e2e7ee; text-decoration: none; }
+.rail-row:last-child { border-bottom: 0; }
+a.rail-row:hover { color: var(--navy); background: #f6f8fb; }
+.rail-row b { color: var(--navy); font-variant-numeric: tabular-nums; }
+.rail-total b { font-size: .95rem; }
+.rail-period { font-size: .72rem; color: #6b7a8f; margin-bottom: .2rem; }
+@media (max-width: 767px) {
+.masthead { flex-wrap: wrap; padding: .6rem 1rem; }
+.user-chip { border-left: 0; padding-left: 0; }
+.ribbon, .pagebar, .workspace { padding-left: 1rem; padding-right: 1rem; }
+.pagebar-date { display: none; }
+}
+@media print {
+.masthead, .ribbon, .pagebar { display: none !important; }
+.workspace { padding: 0; max-width: none; }
+}
+/* Neutralise leftover decorative rules from style.css so card headers stay clean */
+.card-header::before { content: none !important; }
+.card-header i.bi.text-primary { display: inline-block !important; color: var(--brass) !important; }
+.card-header { padding: .8rem 1.1rem !important; border-bottom: 1px solid var(--line) !important; }
+/* ===== Brand wordmark (no box) ===== */
+.tap-wordmark { font-weight: 800; letter-spacing: .12em; font-size: 1.3rem; line-height: 1; color: #fff; }
+.brand-co { font-size: .9rem; color: #c3cfdf; padding-left: .85rem; border-left: 1px solid #3a5a86; line-height: 1.4; }
+.masthead-brand { gap: .85rem; }
+/* ===== Login: company left, form right ===== */
+.login-screen { min-height: 100vh; display: grid; grid-template-columns: 1fr minmax(380px, 480px); }
+.login-brand { background: var(--navy); color: #fff; padding: 2.5rem 3.5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+.login-company { font-size: clamp(3.5rem, 9vw, 7rem); font-weight: 800; letter-spacing: .08em; line-height: 1; margin: 0 0 .75rem; }
+.login-tag { color: #9fb2cb; font-size: 1rem; margin: 0; }
+.login-panel { background: #fff; display: flex; align-items: center; padding: 2rem 3rem; }
+.login-form { width: 100%; max-width: 340px; margin: 0 auto; }
+.login-form h2 { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 1.5rem; }
+.login-form .form-label { font-size: .85rem; font-weight: 600; color: #3b4d63; }
+@media (max-width: 767px) {
+.login-screen { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+.login-brand { padding: 1.5rem; gap: 2rem; }
+.login-company { font-size: 3rem; margin-bottom: .35rem; }
+.login-panel { padding: 2rem 1.5rem; align-items: flex-start; }
+}
+/* ===== Calmer chrome: sentence case, no decorative icons ===== */
+.user-chip .role-label, .crumb { display: none; }
+.ribbon { padding: 0 1.5rem; background: #fff; }
+.ribbon-group { padding: 0; border-right: 0; }
+.ribbon .nav-link { flex-direction: row; min-width: 0; padding: .7rem 1rem; font-size: .85rem; border-radius: 0; }
+.ribbon .nav-link i { display: none; }
+.pagebar { padding-top: 1.1rem; }
+.pagebar-date i { display: none; }
+.table thead th, .table-light { text-transform: none !important; letter-spacing: 0; font-size: .78rem !important; font-weight: 600; }
+.kpi-label, .rail-title { text-transform: none; letter-spacing: 0; font-size: .78rem; font-weight: 600; }
+.rail-title i, .card-header i.bi.text-primary, .card h5 i.bi, .card h6 i.bi { display: none !important; }
+.kpi-value { font-size: 1.5rem; }
+.login-form .form-label { text-transform: none; letter-spacing: 0; }
+.login-form .form-control { background: #fff; }
+/* ===== Visual depth ===== */
+body { background: #eef1f5 !important; }
+.card, .kpi, .rail-card { box-shadow: 0 1px 2px rgba(18,38,63,.06), 0 8px 24px rgba(18,38,63,.05) !important; }
+.card, .rail-card { border-radius: 8px !important; }
+.card-header { border-radius: 8px 8px 0 0 !important; }
+.masthead { padding: .9rem 1.5rem; box-shadow: 0 4px 18px rgba(18,38,63,.25); position: relative; z-index: 2; }
+.tap-wordmark { font-size: 1.5rem; }
+.ribbon { box-shadow: 0 1px 0 var(--line); }
+.ribbon .nav-link { gap: .5rem; font-size: .88rem; }
+.ribbon .nav-link i { display: inline-block; font-size: 1rem; }
+.ribbon .nav-link.active { border-bottom-width: 3px; background: linear-gradient(#fff, #f6f1e3); }
+.pagebar h1 { font-size: 1.6rem; letter-spacing: -.02em; }
+.badge { border-radius: 999px !important; padding: .42em .75em; }
+.btn { transition: transform .12s, background-color .12s; }
+.btn:active { transform: translateY(1px); }
+.table > :not(caption) > * > * { padding-top: .8rem; padding-bottom: .8rem; }
+/* removed: even-row striping overrode the Bootstrap row colours (table-danger / table-warning) on every second row */
+/* KPI cards with icon chips */
+#sec-admin-dashboard .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .9rem; background: none; border: 0; }
+#sec-admin-dashboard .kpi { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 1.1rem 1.25rem 1.1rem 5rem; }
+#sec-admin-dashboard .kpi::before { font-family: 'bootstrap-icons'; position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; font-size: 1.3rem; background: #e3eaf3; color: var(--navy); }
+#sec-admin-dashboard .kpi:nth-child(1)::before { content: "\f4d0"; }
+#sec-admin-dashboard .kpi:nth-child(2)::before { content: "\f1e2"; background: #dcf1e6; color: #1f7a4d; }
+#sec-admin-dashboard .kpi:nth-child(3)::before { content: "\f292"; background: #f6ead0; color: #8a6a14; }
+#sec-admin-dashboard .kpi:nth-child(4)::before { content: "\f246"; background: var(--navy); color: var(--brass); }
+#sec-admin-dashboard .kpi-accent { background: #fff; }
+#sec-admin-dashboard .kpi-value { font-size: 1.7rem; }
+.empty-state { display: none; text-align: center; padding: 3rem 1rem; color: #6b7a8f; font-size: .9rem; }
+.empty-state i { display: block; font-size: 2rem; color: #b9c3d0; margin-bottom: .5rem; }
+.table-responsive:has(tbody:empty) .empty-state { display: block; }
+/* Login dial */
+.login-brand { position: relative; overflow: hidden; background: radial-gradient(circle at 70% 30%, #1c3a5f 0, var(--navy) 62%); }
+.login-dial { position: absolute; width: min(62vw, 640px); right: -12%; top: 0; fill: none; }
+.login-dial circle { stroke-width: 1; }
+.d-ticks { stroke: rgba(255,255,255,.35); stroke-width: 12 !important; stroke-dasharray: 1.6 18.297; stroke-dashoffset: .8; }
+.d-ring { stroke: rgba(255,255,255,.14); }
+.d-arc { stroke: var(--brass); stroke-width: 4 !important; stroke-linecap: round; stroke-dasharray: 700 944; transform: rotate(-90deg); transform-origin: 200px 200px; animation: arc 1.8s cubic-bezier(.2,.7,.2,1) both; }
+.d-hand { transform-origin: 200px 200px; transform: rotate(252deg); animation: hand 1.8s cubic-bezier(.2,.7,.2,1) both; }
+.d-hand line { stroke: #fff; stroke-width: 3; stroke-linecap: round; }
+.d-dot { fill: var(--brass); stroke: none; }
+@keyframes arc { from { stroke-dasharray: 0 944; } }
+@keyframes hand { from { transform: rotate(0deg); } }
+@media (prefers-reduced-motion: reduce) {
+.d-arc, .d-hand { animation: none; }
+}
+.login-name { position: relative; }
+.login-company { text-shadow: 0 2px 24px rgba(0,0,0,.25); }
+.login-panel { box-shadow: -12px 0 40px rgba(0,0,0,.18); position: relative; }
+.login-form h2::before { content: ""; display: block; width: 36px; height: 4px; background: var(--brass); margin-bottom: .9rem; border-radius: 2px; }
+.login-form .form-control { padding: .8rem 1rem; }
+.login-form .btn-primary { padding: .85rem; }
+@media (max-width: 767px) {
+.login-dial { width: 300px; right: -60px; top: -40px; }
+.login-brand { min-height: 240px; }
+}
+/* ===== Approve / reject buttons ===== */
+.row-actions { display: flex; gap: .4rem; margin-top: .45rem; }
+.row-actions .btn { flex: 1 1 0; padding: .25rem .6rem; font-size: .78rem; white-space: nowrap; }
+/* ===== Login, richer ===== */
+.login-brand::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px); background-size: 22px 22px; -webkit-mask-image: linear-gradient(120deg, transparent 20%, #000 80%); mask-image: linear-gradient(120deg, transparent 20%, #000 80%); }
+.login-panel { background-color: #eef1f5; background-image: radial-gradient(#cdd5e0 1px, transparent 1px); background-size: 20px 20px; justify-content: center; }
+.login-form { background: #fff; max-width: 400px; padding: 2.5rem 2.25rem; border-radius: 10px; border: 1px solid var(--line); border-top: 4px solid var(--brass); box-shadow: 0 24px 60px rgba(18,38,63,.14); margin: 0; }
+.login-form h2::before { display: none; }
+.login-form h2 { margin-bottom: .25rem; font-size: 1.6rem; }
+.login-sub { color: #6b7a8f; font-size: .9rem; margin-bottom: 1.5rem; }
+.field { position: relative; }
+.field > i.bi-person, .field > i.bi-lock { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #8794a6; pointer-events: none; }
+.field .form-control { padding-left: 2.8rem; padding-right: 2.8rem; height: 3.1rem; }
+.field .form-control:focus { border-color: var(--brass); box-shadow: 0 0 0 .2rem rgba(176,138,46,.22); }
+.field .eye { position: absolute; right: .35rem; top: 50%; transform: translateY(-50%); border: 0; background: none; color: #6b7a8f; padding: .5rem .65rem; }
+.field .eye:hover { color: var(--navy); }
+.login-form .btn-primary { height: 3.1rem; padding: 0; transition: background-color .15s, box-shadow .15s; }
+.login-form .btn-primary:hover { background: var(--brass) !important; border-color: var(--brass) !important; color: var(--navy); }
+@media (max-width: 767px) {
+.login-panel { padding: 1.5rem 1rem 2.5rem; }
+.login-form { padding: 2rem 1.5rem; }
+}
+/* Dial as the hero */
+.login-dial { position: absolute; fill: none; width: min(78vw, 780px); right: -20%; top: 50%; transform: translateY(-58%); }
+.d-hours { stroke: rgba(255,255,255,.7); stroke-width: 22 !important; stroke-dasharray: 2.4 93.94; stroke-dashoffset: 1.2; }
+.d-sweep { fill: url(#sweep); stroke: none; }
+.d-arc { stroke-width: 5 !important; }
+@media (max-width: 767px) {
+.login-dial { width: 340px; right: -90px; top: -30px; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+.d-arc, .d-hand { animation: none; }
+}
+.proof-link { display: inline-flex; align-items: center; gap: .3rem; color: var(--navy); font-weight: 600; text-decoration: none; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.proof-link:hover { color: var(--brass); text-decoration: underline; }
+.leave-reason { font-size: .75rem; max-width: 220px; }
+#adminLeavesBody td:nth-child(4) { white-space: nowrap; }
+#adminLeavesBody .row-actions { max-width: 190px; }
+/* TAP compact report toolbars */
+.tap-report-head {display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 20px!important;flex-wrap:wrap}
+.tap-report-title {min-width:170px}
+.tap-report-subtitle {font-size:12px;color:#8490a2}
+.tap-filter-bar {display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;min-width:0}
+.tap-search-field {height:38px;display:flex;align-items:center;gap:9px;background:#f8fafc;border:1px solid #dce3eb;border-radius:8px;padding:0 12px;min-width:0;flex:0 1 200px;color:#8190a4;margin:0}
+.tap-search-field:focus-within, .tap-date-range:focus-within {border-color:#b08a2e;box-shadow:0 0 0 3px rgba(176,138,46,.12)}
+.tap-search-field input {min-width:0;width:100%;border:0;outline:0;background:transparent;color:#12263f;font-size:12px}
+.tap-search-field input::placeholder {color:#8a96a5}
+.tap-filter-select {height:38px;max-width:132px;border:1px solid #dce3eb;border-radius:8px;padding:0 9px;background:#f8fafc;color:#263a50;font-size:12px}
+.tap-date-range {height:38px;display:flex;align-items:center;gap:5px;border:1px solid #dce3eb;border-radius:8px;padding:0 10px;background:#f8fafc;color:#8a96a5}
+.tap-date-range input {border:0;background:transparent;outline:0;min-width:0;width:111px;font-size:11px;color:#263a50}
+.tap-date-separator {font-size:11px;color:#8a96a5}
+.tap-print-btn {height:38px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 14px;background:#12263f;color:white;border:1px solid #12263f;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap}
+.tap-print-btn:hover {background:#213e60;color:white}
+.tap-payroll-search {height:32px;max-width:none;flex:1}
+@media(max-width:900px) {
+.tap-report-head {align-items:stretch}
+.tap-filter-bar {justify-content:flex-start;width:100%}
+.tap-search-field {flex:1 1 190px}
+.tap-date-range {flex:1 1 245px}
+.tap-date-range input {flex:1;width:95px}
+}
+@media(max-width:480px) {
+.tap-date-range {width:100%}
+.tap-filter-select {flex:1;max-width:none}
+.tap-print-btn {flex:1}
+}
+/* Compact workforce directory controls */
+.tap-workforce-head {display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tap-workforce-count {font-size:12px;color:#8290a0}
+.tap-workforce-search {flex:0 1 260px}
+.tap-clear-btn {height:38px;display:inline-flex;align-items:center;gap:6px;border:1px solid #dce3eb;background:#fff;border-radius:8px;padding:0 12px;color:#536477;font-size:12px;font-weight:600;white-space:nowrap}
+.tap-clear-btn:hover {background:#f7f9fc;border-color:#b08a2e;color:#12263f}
+@media(max-width:800px) {
+.tap-workforce-head {align-items:stretch}
+.tap-workforce-head>.tap-filter-bar {justify-content:flex-start}
+.tap-workforce-search {flex:1 1 230px}
+}
+@media print {
+#tapPrintReport .tap-signatures {margin-top:36px;break-inside:avoid;page-break-inside:avoid;font-family:Arial,sans-serif}
+#tapPrintReport .tap-signatures-title {font-weight:700;font-size:11px;letter-spacing:.05em;border-bottom:1px solid #bbb;padding-bottom:8px}
+#tapPrintReport .tap-signature-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:46px}
+#tapPrintReport .tap-signature {text-align:center;display:flex;flex-direction:column;gap:5px;font-size:10px}
+#tapPrintReport .tap-signature-line {border-top:1px solid #333;margin-bottom:3px}
+#tapPrintReport .tap-signature span, #tapPrintReport .tap-signature small {color:#444}
+}
+/* Employee portal compact toolbars */
+.tap-emp-header {display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tap-emp-tools {display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tap-emp-tools .tap-search-field {min-width:195px}
+.tap-emp-tools input[type=date] {width:145px;font-size:12px;min-height:36px}
+.tap-emp-tools .tap-filter-select {min-height:36px}
+.tap-emp-results {padding:9px 16px;font-size:12px;color:#64748b;border-top:1px solid #edf0f4}
+.tap-profile-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.tap-profile-field {background:#f8fafc;border:1px solid #e5eaf0;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.tap-profile-field small {color:#64748b}
+.tap-profile-field strong {color:#12263f;overflow-wrap:anywhere}
+@media(max-width:850px) {
+.tap-profile-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+.tap-emp-tools {width:100%}
+.tap-emp-tools .tap-search-field {flex:1}
+}
+@media(max-width:520px) {
+.tap-profile-grid {grid-template-columns:1fr}
+}
+/* Appraisal and leave filters share the compact TAP toolbar styling. */
+.tap-admin-appraisal-tools { display:flex; align-items:center; flex-wrap:wrap; gap:9px; }
+.tap-admin-appraisal-tools .tap-search-field { flex:1 1 230px; min-width:190px; }
+.tap-admin-appraisal-tools .form-control { width:auto; min-width:145px; max-width:180px; }
+.tap-admin-appraisal-tools .tap-filter-select { min-width:135px; }
+@media(max-width:640px) {
+.tap-admin-appraisal-tools .tap-search-field, .tap-admin-appraisal-tools .form-control, .tap-admin-appraisal-tools .tap-filter-select {width:100%;max-width:none;}
+}
+/* Workforce filters: keep Reset aligned with the other controls */
+#sec-admin-workforce .tap-workforce-head {align-items:stretch;flex-direction:column;gap:12px}
+#sec-admin-workforce .tap-workforce-head > .tap-filter-bar {display:grid;grid-template-columns:minmax(220px,1fr) minmax(120px,160px) minmax(120px,160px) auto;align-items:center;justify-content:stretch;gap:10px;width:100%}
+#sec-admin-workforce .tap-filter-bar > * {margin:0;min-width:0;box-sizing:border-box;height:38px}
+#sec-admin-workforce .tap-workforce-search {width:100%;max-width:none;flex:none}
+#sec-admin-workforce .tap-filter-select {width:100%;max-width:none}
+#sec-admin-workforce .tap-clear-btn {justify-content:center;align-self:center}
+@media(max-width:700px) {
+#sec-admin-workforce .tap-workforce-head > .tap-filter-bar {grid-template-columns:repeat(2,minmax(0,1fr))}
+#sec-admin-workforce .tap-workforce-search {grid-column:1/-1}
+}
+@media(max-width:420px) {
+#sec-admin-workforce .tap-workforce-head > .tap-filter-bar {grid-template-columns:1fr}
+#sec-admin-workforce .tap-workforce-search {grid-column:auto}
+}
+/* ===== Bootstrap responsive pass: menu collapse, tables, phones ===== */
+@media (min-width: 992px) {
+#ribbonMenu.collapse:not(.show) { display: block; }
+}
+@media (max-width: 991.98px) {
+.ribbon { overflow-x: visible; padding: 0 1rem .5rem; }
+.ribbon-groups { flex-direction: column; }
+.ribbon-group { border-right: 0; border-bottom: 1px solid var(--line); padding: .5rem 0; }
+.ribbon-items { flex-wrap: wrap; }
+}
+.table-responsive { max-height: 70vh; }
+.table thead.sticky-top th { background: #eef1f5; }
+.table > tbody.table-group-divider { border-top-color: var(--navy); }
+@media (max-width: 575.98px) {
+.workspace { padding-left: .75rem; padding-right: .75rem; }
+.kpi { flex-basis: 50%; }
+.tap-report-head .btn, .pagebar .btn { width: 100%; }
+}
+/* table-dark header must win over the earlier sticky-header rule */
+.table thead.table-dark th { background: var(--navy) !important; color: #fff !important; border-color: #2a4468 !important; }
+/* Login: hide the browser's built-in password reveal so only our own eye button shows */
+input::-ms-reveal, input::-ms-clear { display: none !important; }
+input::-webkit-credentials-auto-fill-button { visibility: hidden; position: absolute; right: 0; }
+/* Table captions: breathing room from the edge of the card */
+.table > caption { padding: .65rem 1rem; color: var(--ink); font-size: .85rem; }
+/* Filters: one tidy row, aligned right, on tablets and desktops (below 801px the original stacked layout is kept) */
+@media (min-width: 801px) {
+.tap-report-head, .tap-emp-header { justify-content: space-between; align-items: center; }
+.tap-report-head .tap-filter-bar, .tap-emp-header .tap-emp-tools { margin-left: auto; justify-content: flex-end; width: auto; }
+.tap-filter-select { flex: 0 0 auto; min-width: 140px; }
+/* Workforce: undo the stacked grid, put title left and the controls in one row on the right */
+#sec-admin-workforce .tap-workforce-head { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; }
+#sec-admin-workforce .tap-workforce-head > .tap-filter-bar { display: flex !important; flex-wrap: wrap !important; width: auto !important; margin-left: auto; justify-content: flex-end !important; gap: 8px; }
+#sec-admin-workforce .tap-workforce-search { flex: 0 1 280px !important; width: 280px !important; }
+#sec-admin-workforce .tap-filter-select { flex: 0 0 150px !important; width: 150px !important; }
+/* Appraisals and leaves: the toolbar is its own row, so let it span the card and sit on the right in one line */
+.tap-admin-appraisal-tools { width: 100%; margin-left: 0; justify-content: flex-end; flex-wrap: wrap; }
+.tap-admin-appraisal-tools .tap-search-field { flex: 0 1 260px; }
+}
+/* .card-header is display:flex (style.css), so its child toolbar row shrank to its content and the filters hugged the title. Make it fill the header so the filters can sit on the right. */
+.card-header > .tap-emp-header, .card-header > .tap-workforce-head { flex: 1 1 100%; width: 100%; }
+@media (min-width: 801px) {
+.tap-emp-header > .tap-emp-tools { margin-left: auto; justify-content: flex-end; }
+}
+/* Compact date range: one pill, one calendar icon, two short date fields */
+.tap-date-range { height: 38px; gap: 6px; padding: 0 10px; flex: 0 0 auto; }
+.tap-date-range input[type=date] { width: 104px !important; min-height: 0 !important; height: 100%; padding: 0; font-size: 12px; background: transparent !important; border: 0 !important; box-shadow: none !important; cursor: pointer; }
+.tap-date-range input::-webkit-calendar-picker-indicator { display: none; }
+.tap-date-range > i { color: #8a96a5; font-size: .85rem; }
+/* Result counters sit on the left of the filter row */
+.tap-admin-appraisal-tools .tap-emp-results { font-size: .8rem; color: #6b7a8f; white-space: nowrap; margin-right: auto; padding: 0; }
+/* Payslip printout uses the same header and signature layout as the other reports */
+@media print {
+#payslipPrintArea .tap-ps-head { border-bottom: 2px solid #000; margin-bottom: 14px; font-family: Arial, sans-serif; }
+#payslipPrintArea .tap-ps-head h2 { font-size: 16px; margin: 0 0 4px; }
+#payslipPrintArea .tap-ps-head p { font-size: 11px; margin: 0 0 8px; }
+#payslipPrintArea .tap-signatures { margin-top: 36px; break-inside: avoid; page-break-inside: avoid; font-family: Arial, sans-serif; }
+#payslipPrintArea .tap-signatures-title { font-weight: 700; font-size: 11px; letter-spacing: .05em; border-bottom: 1px solid #bbb; padding-bottom: 8px; }
+#payslipPrintArea .tap-signature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 46px; }
+#payslipPrintArea .tap-signature { text-align: center; display: flex; flex-direction: column; gap: 5px; font-size: 10px; }
+#payslipPrintArea .tap-signature-line { border-top: 1px solid #333; margin-bottom: 3px; }
+}
+/* Appraisals and leaves: breathing room between the filter row and the table header */
+.tap-admin-appraisal-tools { padding-top: .85rem !important; padding-bottom: 1.1rem !important; }
+/* Cleaner workforce directory and employee history tables */
+#sec-admin-workforce .table-responsive { overflow-x: auto; max-height: none; }
+#sec-admin-workforce table { min-width: 920px; border-collapse: separate; border-spacing: 0; }
+#sec-admin-workforce .table thead th { padding: 15px 14px; white-space: nowrap; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; vertical-align: middle; }
+#sec-admin-workforce .table tbody td { padding: 15px 14px; vertical-align: middle; border-color: #edf1f5; }
+#sec-admin-workforce .table tbody tr:hover { background: #f8fafc; }
+.work-hours-pill { display:inline-flex; align-items:center; gap:7px; padding:7px 10px; border-radius:8px; background:#f1f5f9; color:#243b53; font-weight:650; white-space:nowrap; }
+.work-hours-pill .bi { color:#b08a2e; }
+.workforce-view-btn { width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; border-radius:9px; }
+.workforce-view-btn .bi { font-size:16px; }
+.employee-record-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:18px; }
+.employee-record-summary > div { display:flex; flex-direction:column; gap:5px; padding:12px 14px; background:#f8fafc; border:1px solid #e8edf3; border-radius:9px; }
+.employee-record-summary small { color:#64748b; }
+.employee-record-summary strong { color:#152b43; overflow-wrap:anywhere; }
+@media(max-width:640px) {
+.employee-record-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+/* Center the proof eye button in the My Attendance table cell only */
+#sec-emp-dtr #empPersonalDtrBody td:last-child { text-align: center; vertical-align: middle; }
+#sec-emp-dtr #empPersonalDtrBody .workforce-view-btn { margin-inline: auto; }
+/* Compact table pagination and icon-only reset controls requested for laptop-sized screens. */
+.tap-pagination { display:flex; align-items:center; justify-content:flex-end; padding:10px 12px; border-top:1px solid #e5e7eb; background:#fff; }
+.tap-pagination.d-none { display:none !important; }
+.tap-pagination .pagination { margin-bottom:0; }
+.tap-pagination .page-link { min-width:32px; text-align:center; color:#152b43; border-color:#d8dee7; }
+.tap-pagination .page-item.active .page-link { background:#152b43; border-color:#152b43; color:#fff; }
+.tap-pagination .page-item.disabled .page-link { color:#a1aab7; }
+.tap-clear-btn { display:inline-flex; align-items:center; justify-content:center; width:34px; min-width:34px; height:32px; padding:0; border:1px solid #cbd5e1; border-radius:6px; background:#fff; color:#475569; }
+.tap-clear-btn:hover { background:#f1f5f9; color:#0f172a; }
+.tap-clear-btn i { font-size:1rem; }
+/* Final Bootstrap table polish: readable headers, subtle zebra stripes, and no nested vertical table scrolling. */
+.table-responsive { max-height: none !important; overflow-y: visible !important; }
+.table { --bs-table-striped-bg: #f3f6fa; --bs-table-hover-bg: #eaf0f7; --bs-table-border-color: #dce3ec; }
+.table > :not(caption) > * > * { padding: .68rem .85rem; vertical-align: middle; }
+.table thead.table-dark th { background: var(--navy) !important; color: #fff !important; border-color: #2a4468 !important; padding-top: .8rem; padding-bottom: .8rem; }
+.table tbody tr > * { transition: background-color .12s ease; }
+/* Status is communicated by the badge only; keep every table row neutral. */
+.table tbody tr.table-success > *, .table tbody tr.table-danger > *, .table tbody tr.table-warning > *, .table tbody tr.table-secondary > *, .table tbody tr.table-info > * { --bs-table-bg: transparent !important; background-color: transparent !important; color: inherit; }
+.table tbody tr:nth-child(even) > * { --bs-table-bg: var(--bs-table-striped-bg); }
+.tap-pagination { padding: .65rem .85rem; background: #fff; border-top: 1px solid #dce3ec; }
+.tap-pagination .page-link { min-width: 34px; padding: .35rem .65rem; font-weight: 600; }
+.tap-pagination .page-item.active .page-link { background: var(--navy); border-color: var(--navy); }
+/* Keep the dashboard usable on laptop-height screens; table data uses pagination rather than an inner scrollbar. */
+@media (min-width: 992px) {
+#appWorkspace { min-height: 100vh; }
+.table-responsive { overflow-x: auto !important; }
+}
+/* Refined table styling: restrained, consistent and easy to scan. */
+.table-responsive { border-radius: 0 0 12px 12px; }
+.table { --bs-table-bg: #fff; --bs-table-striped-bg: #f7f9fc; --bs-table-hover-bg: #f0f5fb; margin-bottom: 0; }
+.table thead th { background: #152b43 !important; color: #fff !important; border-color: #2a4468 !important; font-weight: 600; letter-spacing: .01em; white-space: nowrap; }
+.table tbody tr.table-success > *, .table tbody tr.table-danger > *, .table tbody tr.table-warning > *, .table tbody tr.table-secondary > *, .table tbody tr.table-info > * { background-color: transparent !important; color: inherit !important; }
+.table tbody tr:hover > * { --bs-table-bg: #f0f5fb !important; }
+.tap-pagination { justify-content: center !important; background: #152b43 !important; border-top: 1px solid #2a4468 !important; border-radius: 0 0 12px 12px; padding: 12px !important; }
+.tap-pagination .page-link { min-width: 38px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #dce4ee !important; border-radius: 8px !important; margin: 0 3px; color: #152b43 !important; background: #fff !important; font-weight: 600; box-shadow: none !important; }
+.tap-pagination .page-item.active .page-link { color: #fff !important; background: #4776a8 !important; border-color: #4776a8 !important; }
+.tap-pagination .page-item.disabled .page-link { opacity: .45; }
+.approval-actions { margin-top: 0 !important; gap: .5rem; min-width: 150px; }
+.approval-actions .btn { flex: 0 0 auto !important; border-radius: 7px; padding: .42rem .7rem !important; font-weight: 600; }
+@media (max-width: 767.98px) {
+.tap-pagination { border-radius: 0 0 10px 10px; }
+.approval-actions { min-width: 0; flex-wrap: wrap; }
+}
+/* Compact Bootstrap pagination with an editable, bounded page number. */
+.tap-pagination { justify-content: center !important; padding: .45rem .75rem !important; background: #fff !important; border-top: 1px solid #dce3ec !important; }
+.tap-pagination .pagination { align-items: center; gap: 2px; }
+.tap-pagination .page-link { min-width: 30px !important; height: 30px !important; padding: .2rem .5rem !important; margin: 0 !important; border-radius: 6px !important; font-size: .82rem; }
+.tap-pagination .tap-page-input { width: 42px; height: 30px; padding: .15rem .25rem; text-align: center; border-color: #d8dee7; border-radius: 6px; font-size: .82rem; }
+.tap-pagination .tap-page-total { min-width: auto !important; background: #f1f4f8 !important; color: #526174 !important; border-color: #d8dee7 !important; font-weight: 500; }
+/* Keep the leave form and its request table aligned like the Requests screen. */
+#sec-emp-leave > .row { --bs-gutter-x: 1.5rem; }
+#sec-emp-leave .card { border-radius: 10px; }
+#sec-emp-leave .table-responsive { border-radius: 0 0 10px 10px; }
+@media (max-width: 991.98px) {
+#sec-emp-leave > .row { row-gap: 1rem; }
+}
+/* Final leave screen alignment: mirror the side-by-side request workspace. */
+#sec-emp-leave .emp-leave-layout { align-items: stretch !important; }
+#sec-emp-leave .emp-leave-form-card, #sec-emp-leave .emp-leave-table-card { border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 4px 16px rgba(21,43,67,.06) !important; }
+#sec-emp-leave .emp-request-card-heading { display:flex; align-items:center; gap:.8rem; padding:.35rem .15rem 1rem; margin-bottom:1rem; border-bottom:1px solid #e8edf3; }
+#sec-emp-leave .emp-request-icon { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; flex:0 0 42px; border-radius:10px; background:#edf3fa; color:#152b43; font-size:1.2rem; }
+#sec-emp-leave .emp-leave-form-card form .form-label { color:#334155; }
+#sec-emp-leave .emp-leave-form-card .form-control, #sec-emp-leave .emp-leave-form-card .form-select { border-color:#d7e0ea; border-radius:7px; }
+#sec-emp-leave .emp-leave-form-card .btn[type=submit] { border-radius:7px; background:#152b43; border-color:#152b43; }
+#sec-emp-leave .emp-leave-table-card .card-header { min-height:82px; }
+#sec-emp-leave .tap-emp-header { gap:1rem; align-items:center; }
+#sec-emp-leave .tap-emp-tools { flex-wrap:wrap; justify-content:flex-end; }
+/* Compact Bootstrap pagination, centered below each table. */
+.tap-pagination { display:flex; justify-content:center !important; align-items:center; padding:.4rem .6rem !important; background:#fff !important; border-top:1px solid #e5eaf1 !important; border-radius:0 0 10px 10px; }
+.tap-pagination .pagination { gap:.2rem; }
+.tap-pagination .page-link { min-width:29px !important; height:29px !important; padding:.15rem .45rem !important; font-size:.8rem !important; border-radius:6px !important; }
+.tap-pagination .tap-page-input { width:38px !important; height:29px !important; font-size:.8rem !important; }
+.tap-pagination .tap-page-total { padding:.15rem .45rem !important; font-size:.78rem !important; }
+@media (max-width: 991.98px) {
+#sec-emp-leave .tap-emp-header { align-items:flex-start; flex-direction:column; }
+#sec-emp-leave .tap-emp-tools { justify-content:flex-start; width:100%; }
+}
+/* Bootstrap table polish: clear zebra stripes with restrained contrast. */
+.table.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-bg-type: #e8eef6;
+  --bs-table-accent-bg: #e8eef6;
+  background-color: #e8eef6 !important;
+}
+.table.table-striped > tbody > tr:nth-of-type(even) > * {
+  --bs-table-bg-type: #ffffff;
+  --bs-table-accent-bg: #ffffff;
+  background-color: #ffffff !important;
+}
+.table.table-striped > tbody > tr:hover > * {
+  --bs-table-bg-type: #dbe7f5;
+  --bs-table-accent-bg: #dbe7f5;
+  background-color: #dbe7f5 !important;
+}
+/* Ensure tables using Bootstrap .table also get the same readable stripe pattern. */
+.table:not(.table-striped) > tbody > tr:nth-of-type(odd) > * { background-color: #e8eef6 !important; }
+.table:not(.table-striped) > tbody > tr:nth-of-type(even) > * { background-color: #ffffff !important; }
+.table:not(.table-striped) > tbody > tr:hover > * { background-color: #dbe7f5 !important; }
+/* Keep page controls compact, centered, and consistent with Bootstrap pagination. */
+.tap-pagination { justify-content: center !important; padding: .35rem .5rem !important; background: #fff !important; }
+.tap-pagination .page-link { min-width: 28px !important; height: 28px !important; padding: .1rem .4rem !important; font-size: .78rem !important; }
+.tap-pagination .tap-page-input { width: 36px !important; height: 28px !important; padding: .1rem .2rem !important; font-size: .78rem !important; }
+/* Final focused polish: request workspace, minimalist pagination, stable approval columns. */
+#sec-emp-requests > .row { --bs-gutter-x: 1.25rem; --bs-gutter-y: 1.25rem; }
+#sec-emp-requests .card { border: 1px solid #e3e9f1 !important; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 18px rgba(21,43,67,.06) !important; }
+#sec-emp-requests .col-lg-5 > .card { padding: 1.15rem !important; }
+#sec-emp-requests #formRequest { display:block; }
+#sec-emp-requests #formRequest > .form-select:first-child { margin-bottom: .65rem !important; }
+#sec-emp-requests .card-header { padding: 1rem; border-bottom: 1px solid #e8edf3; }
+#sec-emp-requests .tap-emp-header { display:flex; align-items:center; justify-content:space-between; gap:.75rem; flex-wrap:wrap; }
+#sec-emp-requests .tap-emp-tools { display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
+#sec-emp-requests .table-responsive { border-radius: 0 0 12px 12px; }
+#sec-emp-requests .table { min-width: 520px; }
+/* Minimal Bootstrap pagination: small controls, no oversized blocks. */
+.tap-pagination { padding: .25rem .4rem !important; min-height: 0 !important; }
+.tap-pagination .pagination { gap: 0 !important; margin: 0 !important; }
+.tap-pagination .page-link { min-width: 25px !important; width:auto !important; height:25px !important; padding: .05rem .32rem !important; font-size: .72rem !important; border-radius: 4px !important; box-shadow:none !important; }
+.tap-pagination .tap-page-input { width:31px !important; height:25px !important; padding:0 .15rem !important; font-size:.72rem !important; border-radius:4px !important; }
+.tap-pagination .tap-page-total { font-size:.7rem !important; padding:.05rem .3rem !important; }
+/* Keep approval columns from shifting when action buttons appear in the Status cell. */
+#sec-admin-approvals table { width:100%; table-layout:fixed; }
+#sec-admin-approvals table thead th:nth-child(1) { width:18%; }
+#sec-admin-approvals table thead th:nth-child(2) { width:19%; }
+#sec-admin-approvals table thead th:nth-child(3) { width:15%; }
+#sec-admin-approvals table thead th:nth-child(4) { width:27%; }
+#sec-admin-approvals table thead th:nth-child(5) { width:21%; }
+#sec-admin-approvals table th, #sec-admin-approvals table td { overflow-wrap:anywhere; }
+#sec-admin-appraisals .approval-actions { display:flex; align-items:center; justify-content:flex-start; gap:.25rem !important; min-width:0 !important; width:100%; white-space:nowrap; }
+#sec-admin-approvals .approval-actions { display:flex; align-items:center; justify-content:flex-start; gap:.25rem !important; min-width:0 !important; width:100%; white-space:nowrap; }
+#sec-admin-appraisals .approval-actions .btn { padding:.25rem .42rem !important; font-size:.72rem !important; min-width:0; }
+#sec-admin-approvals .approval-actions .btn { padding:.25rem .42rem !important; font-size:.72rem !important; min-width:0; }
+#sec-admin-approvals #adminRequestsBody td:last-child { vertical-align:middle; }
+@media (max-width: 991.98px) {
+#sec-emp-requests .col-lg-5, #sec-emp-requests .col-lg-7 { width:100%; }
+#sec-admin-approvals table { min-width:760px; }
+}
+/* Focused revision based on employee request screenshots: matching card scale and quieter pagination. */
+#sec-emp-requests > .row { --bs-gutter-x: 1.25rem; --bs-gutter-y: 1.25rem; align-items: stretch; }
+#sec-emp-requests .col-lg-5, #sec-emp-requests .col-lg-7 { display:flex; }
+#sec-emp-requests .col-lg-5 > .card, #sec-emp-requests .col-lg-7 > .card { width:100%; min-width:0; border:1px solid #e2e8f0 !important; border-radius:12px !important; box-shadow:0 5px 18px rgba(21,43,67,.06) !important; overflow:hidden; }
+#sec-emp-requests .col-lg-5 > .card { padding:1.1rem !important; }
+#sec-emp-requests .emp-request-card-heading { display:flex; align-items:center; gap:.8rem; padding:.25rem .1rem 1rem; margin-bottom:1rem; border-bottom:1px solid #e8edf3; }
+#sec-emp-requests .emp-request-card-heading .emp-request-icon { width:42px; height:42px; flex:0 0 42px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; background:#edf3fa; color:#152b43; font-size:1.15rem; }
+#sec-emp-requests #formRequest > .form-select, #sec-emp-requests #formRequest > input, #sec-emp-requests #formRequest > textarea, #sec-emp-requests #formRequest #reqSched > input, #sec-emp-requests #formRequest #reqSched > select { min-height:40px; margin-bottom:.65rem !important; }
+#sec-emp-requests #formRequest > textarea { min-height:78px; }
+#sec-emp-requests #formRequest > button[type="submit"] { min-height:40px; margin-top:.2rem; }
+#sec-emp-requests #formRequest .form-text { margin-top:.1rem; }
+#sec-emp-requests .col-lg-7 > .card .card-header { padding:1rem; border-bottom:1px solid #e8edf3; }
+#sec-emp-requests .col-lg-7 > .card .table { margin-bottom:0; }
+#sec-emp-requests .col-lg-7 > .card .table thead th { padding:.8rem .85rem; }
+#sec-emp-requests .col-lg-7 > .card .table tbody td { padding:.8rem .85rem; }
+/* Minimal, centered Bootstrap pagination: light controls and no oversized footer. */
+.tap-pagination { display:flex !important; justify-content:center !important; align-items:center !important; padding:.35rem .5rem !important; min-height:0 !important; background:#fff !important; border-top:1px solid #edf0f4 !important; border-radius:0 0 10px 10px; }
+.tap-pagination .pagination { display:flex; align-items:center; gap:.15rem !important; margin:0 !important; }
+.tap-pagination .page-link { display:inline-flex; align-items:center; justify-content:center; min-width:24px !important; width:auto !important; height:24px !important; padding:0 .3rem !important; margin:0 !important; border:1px solid transparent !important; border-radius:5px !important; background:transparent !important; color:#526174 !important; font-size:.72rem !important; line-height:1 !important; box-shadow:none !important; }
+.tap-pagination .page-item.active .page-link { background:#edf2f8 !important; color:#152b43 !important; border-color:#edf2f8 !important; font-weight:600; }
+.tap-pagination .page-item.disabled .page-link { color:#b2bac5 !important; opacity:.7; }
+.tap-pagination .tap-page-input { width:30px !important; min-width:30px !important; height:24px !important; padding:0 .15rem !important; text-align:center; border:1px solid #e0e6ee !important; border-radius:5px !important; font-size:.72rem !important; box-shadow:none !important; }
+.tap-pagination .tap-page-total { padding:0 .25rem !important; background:transparent !important; color:#8a95a4 !important; font-size:.7rem !important; font-weight:400 !important; border-color:transparent !important; }
+.tap-pagination .page-link:focus, .tap-pagination .tap-page-input:focus { box-shadow:0 0 0 .12rem rgba(21,43,67,.08) !important; }
+/* Fixed table layout keeps approval columns steady when action buttons appear. */
+#sec-admin-approvals .table-responsive { overflow-x:auto; }
+#sec-admin-approvals table { width:100%; table-layout:fixed !important; }
+#sec-admin-approvals table thead th:nth-child(1) { width:18%; }
+#sec-admin-approvals table thead th:nth-child(2) { width:19%; }
+#sec-admin-approvals table thead th:nth-child(3) { width:14%; }
+#sec-admin-approvals table thead th:nth-child(4) { width:29%; }
+#sec-admin-approvals table thead th:nth-child(5) { width:20%; }
+#sec-admin-approvals table th, #sec-admin-approvals table td { overflow-wrap:anywhere; }
+#sec-admin-appraisals .approval-actions { display:flex !important; flex-wrap:nowrap !important; align-items:center; gap:.25rem !important; min-width:0 !important; width:100%; white-space:nowrap; }
+#sec-admin-approvals .approval-actions { display:flex !important; flex-wrap:nowrap !important; align-items:center; gap:.25rem !important; min-width:0 !important; width:100%; white-space:nowrap; }
+#sec-admin-appraisals .approval-actions .btn { flex:1 1 0 !important; min-width:0 !important; padding:.25rem .28rem !important; font-size:.68rem !important; line-height:1.25; white-space:nowrap; }
+#sec-admin-approvals .approval-actions .btn { flex:1 1 0 !important; min-width:0 !important; padding:.25rem .28rem !important; font-size:.68rem !important; line-height:1.25; white-space:nowrap; }
+#sec-admin-appraisals .approval-actions .btn i { margin-right:.15rem !important; }
+#sec-admin-approvals .approval-actions .btn i { margin-right:.15rem !important; }
+@media (max-width:991.98px) {
+#sec-emp-requests .col-lg-5, #sec-emp-requests .col-lg-7 { display:block; width:100%; }
+#sec-admin-approvals table { min-width:760px; }
+}
+/* ===== Responsive refinement: tablet and phone layouts ===== */
+html { -webkit-text-size-adjust: 100%; }
+body { min-width: 320px; }
+img, video, canvas, svg { max-width: 100%; }
+main { min-width: 0; }
+.row > * { min-width: 0; }
+/* Keep top navigation usable without squeezing every item into one line. */
+@media (max-width: 767.98px) {
+.masthead { align-items: flex-start; flex-direction: column; padding: .7rem .85rem; gap: .6rem; }
+.masthead-right { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+.user-chip { padding-left: .5rem; }
+.ribbon { padding: 0 .5rem; }
+.ribbon-groups { width: max-content; min-width: 100%; }
+.ribbon-group { padding: .35rem .45rem; }
+.ribbon .nav-link { min-width: 74px; padding: .4rem .45rem; font-size: .68rem; }
+.ribbon .nav-link i { font-size: 1.05rem; }
+main.container-fluid { padding-left: .7rem !important; padding-right: .7rem !important; }
+.card { min-width: 0; }
+.card-body { padding: .85rem !important; }
+.card-header { padding: .75rem .85rem !important; }
+.table-responsive { max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+.table-responsive > .table { min-width: 600px; }
+#sec-admin-approvals .table-responsive > .table { min-width: 760px; }
+#sec-emp-requests > .row { --bs-gutter-x: .75rem; --bs-gutter-y: .85rem; }
+#sec-emp-requests .col-lg-5, #sec-emp-requests .col-lg-7 { width: 100%; display: block; }
+#sec-emp-requests .col-lg-5 > .card, #sec-emp-requests .col-lg-7 > .card { margin-bottom: 0; }
+#sec-emp-requests .col-lg-5 > .card { padding: .85rem !important; }
+#sec-emp-requests .emp-request-card-heading { gap: .6rem; padding-bottom: .75rem; margin-bottom: .8rem; }
+#sec-emp-requests .emp-request-card-heading .emp-request-icon { width: 36px; height: 36px; flex-basis: 36px; }
+#sec-emp-requests #formRequest .form-control, #sec-emp-requests #formRequest .form-select { width: 100%; max-width: 100%; }
+#sec-emp-requests .col-lg-7 > .card .card-header { display: flex; flex-direction: column; align-items: stretch !important; gap: .65rem; }
+#sec-emp-requests .col-lg-7 > .card .card-header > div { width: 100%; flex-wrap: wrap; }
+#sec-emp-requests .col-lg-7 > .card .card-header input { flex: 1 1 140px; min-width: 0; }
+.tap-pagination { padding: .3rem !important; }
+.tap-pagination .page-link { min-width: 22px !important; height: 22px !important; font-size: .68rem !important; }
+.tap-pagination .tap-page-input { width: 28px !important; min-width: 28px !important; height: 22px !important; }
+.modal-dialog { margin: .5rem; }
+.modal-dialog-centered { min-height: calc(100% - 1rem); }
+.form-control, .form-select, .btn { max-width: 100%; }
+}
+/* Tablet: stack form and results before either side gets cramped. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+#sec-emp-requests > .row { --bs-gutter-x: 1rem; --bs-gutter-y: 1rem; }
+#sec-emp-requests .col-lg-5, #sec-emp-requests .col-lg-7 { width: 100%; display: block; }
+#sec-emp-requests .col-lg-5 > .card, #sec-emp-requests .col-lg-7 > .card { width: 100%; }
+.table-responsive { max-width: 100%; overflow-x: auto !important; }
+.table-responsive > .table { min-width: 640px; }
+#sec-admin-approvals .table-responsive > .table { min-width: 760px; }
+.ribbon { overflow-x: auto; }
+}
+/* Avoid fixed-width form fields and action bars causing overflow on any viewport. */
+input, select, textarea, button { max-width: 100%; }
+#sec-admin-approvals td:last-child { overflow: hidden; }
+#sec-admin-appraisals .approval-actions { max-width: 100%; }
+#sec-admin-approvals .approval-actions { max-width: 100%; }
+/* ===== Focused fixes: mobile action alignment + single-row tablet navigation ===== */
+/* Keep action/filter controls aligned and prevent reset buttons from drifting. */
+@media (max-width: 767.98px) {
+.card-header .d-flex, .card-header .tap-emp-tools {
+    display: flex !important;
+    align-items: stretch !important;
+    flex-wrap: wrap !important;
+    gap: .5rem !important;
+    min-width: 0;
+  }
+.card-header .d-flex > input, .card-header .d-flex > select, .tap-emp-tools > input, .tap-emp-tools > select {
+    flex: 1 1 135px;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+.tap-clear-btn, button[aria-label*="reset" i], button[title*="reset" i] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    align-self: stretch;
+  }
+.card-header .btn {
+    min-height: 38px;
+    margin: 0 !important;
+    white-space: nowrap;
+  }
+.card-header .d-flex > .tap-clear-btn, .tap-emp-tools > .tap-clear-btn {
+    margin-left: 0 !important;
+  }
+.row-actions { display: flex !important; flex-wrap: nowrap !important; gap: .35rem !important; }
+.row-actions .btn { flex: 1 1 0 !important; min-width: 0 !important; }
+}
+/* On tablets, keep all employee navigation items on one horizontal line. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+#ribbonMenu.ribbon { overflow-x: auto; overflow-y: hidden; }
+#ribbonMenu .ribbon-groups:not(.d-none) {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 100%;
+    gap: .35rem;
+  }
+#ribbonMenu .ribbon-group {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center;
+    padding: .15rem .2rem !important;
+    border-right: 0 !important;
+  }
+#ribbonMenu .ribbon-items {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center;
+    gap: .1rem;
+  }
+#ribbonMenu .ribbon .nav-link, #ribbonMenu .nav-link {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center;
+    white-space: nowrap !important;
+    padding: .55rem .55rem !important;
+    font-size: .76rem !important;
+  }
+#ribbonMenu .nav-link span { white-space: nowrap; }
+}
+/* Final targeted fixes from the latest mobile/tablet screenshots. */
+/* Keep navigation in one horizontal strip on phones when the menu is expanded. */
+@media (max-width: 767.98px) {
+#ribbonMenu.ribbon { overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch; }
+#ribbonMenu .ribbon-groups:not(.d-none) { display:flex !important; flex-flow:row nowrap !important; align-items:center !important; width:max-content !important; min-width:100% !important; }
+#ribbonMenu .ribbon-group { display:flex !important; flex:0 0 auto !important; padding:.1rem .15rem !important; border:0 !important; }
+#ribbonMenu .ribbon-items { display:flex !important; flex-flow:row nowrap !important; gap:.1rem !important; }
+#ribbonMenu .ribbon .nav-link, #ribbonMenu .nav-link { display:inline-flex !important; flex:0 0 auto !important; align-items:center !important; white-space:nowrap !important; padding:.45rem .5rem !important; font-size:.72rem !important; }
+/* Keep filter controls and reset together instead of orphaning reset on a new row. */
+#sec-emp-leave .tap-emp-tools, #sec-admin-workforce .tap-filter-bar {
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) 36px !important;
+    gap:.4rem !important;
+    align-items:center !important;
+    width:100% !important;
+  }
+#sec-emp-leave .tap-emp-tools input, #sec-emp-leave .tap-emp-tools select, #sec-admin-workforce .tap-filter-bar input, #sec-admin-workforce .tap-filter-bar select { width:100% !important; min-width:0 !important; max-width:100% !important; }
+#sec-emp-leave .tap-emp-tools .tap-clear-btn, #sec-admin-workforce .tap-filter-bar .tap-clear-btn {
+    grid-column:auto !important; grid-row:auto !important; justify-self:end !important;
+    width:36px !important; min-width:36px !important; height:36px !important;
+    padding:0 !important; margin:0 !important; align-self:center !important;
+  }
+#sec-emp-leave .tap-emp-tools { flex-wrap:initial !important; }
+/* Compact, consistent admin filter/action buttons on narrow screens. */
+#sec-admin-payroll .btn, #sec-admin-workforce .btn, #sec-admin-approvals .btn, #sec-admin-appraisals .btn, .tap-filter-bar .btn, .tap-filter-bar button, .tap-filter-bar select {
+    font-size:.78rem !important; line-height:1.2 !important;
+  }
+#sec-admin-payroll .btn, #sec-admin-workforce .btn, #sec-admin-approvals .btn, #sec-admin-appraisals .btn {
+    min-height:32px !important; padding:.35rem .55rem !important; border-radius:6px !important;
+  }
+#sec-admin-payroll .tap-filter-bar, #sec-admin-workforce .tap-filter-bar { gap:.4rem !important; }
+}
+@media (min-width: 768px) and (max-width: 1199.98px) {
+#ribbonMenu.ribbon { overflow-x:auto !important; overflow-y:hidden !important; }
+#ribbonMenu .ribbon-groups:not(.d-none) { flex-flow:row nowrap !important; width:max-content !important; min-width:100% !important; }
+}
+/* =====================================================================
+   FINAL RESPONSIVE FIX (mobile + tablet) — keep this block LAST
+   ===================================================================== */
+/* --- Dashboard KPI cards: clean 2x2 on phone/tablet, no orphan card, no clipped numbers --- */
+@media (max-width: 991.98px) {
+#sec-admin-dashboard .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+#sec-admin-dashboard .kpi { min-width: 0; padding: .9rem .9rem .9rem 4.1rem; }
+#sec-admin-dashboard .kpi::before { left: .8rem; width: 40px; height: 40px; }
+#sec-admin-dashboard .kpi-label { font-size: .72rem; line-height: 1.25; }
+#sec-admin-dashboard .kpi-value { font-size: clamp(1.15rem, 4.2vw, 1.55rem); overflow-wrap: anywhere; }
+}
+@media (max-width: 575.98px) {
+#sec-admin-dashboard .kpi { padding: .75rem .7rem .75rem 3.5rem; }
+#sec-admin-dashboard .kpi::before { left: .6rem; width: 34px; height: 34px; font-size: .95rem; }
+#sec-admin-dashboard .kpi-value { font-size: 1.15rem; }
+#sec-admin-dashboard .kpi-label { font-size: .68rem; }
+}
+/* --- Page titles smaller on small screens --- */
+@media (max-width: 767.98px) {
+.pagebar h1, .pagebar h2 { font-size: 1.35rem !important; line-height: 1.25; }
+}
+/* --- Filter bars: every control gets a full-width row on phones (no cut-off selects / orphan buttons) --- */
+@media (max-width: 575.98px) {
+.tap-filter-bar, #sec-admin-workforce .tap-workforce-head > .tap-filter-bar {
+    display: grid !important; grid-template-columns: 1fr 1fr; gap: .5rem; width: 100%;
+  }
+.tap-filter-bar > *, #sec-admin-workforce .tap-filter-bar > * { min-width: 0 !important; max-width: none !important; width: 100%; height: auto; min-height: 40px; }
+.tap-filter-bar .tap-search-field, .tap-filter-bar .tap-date-range, #sec-admin-workforce .tap-workforce-search { grid-column: 1 / -1; }
+.tap-filter-bar .tap-clear-btn { width: 100%; }
+.tap-filter-bar .tap-print-btn { grid-column: auto; }
+.tap-date-range { display: flex; align-items: center; gap: .35rem; }
+.tap-date-range input { flex: 1 1 0; min-width: 0; width: auto; }
+}
+/* --- Tables: tighter text so more columns fit, dates/IDs never break mid-value --- */
+@media (max-width: 767.98px) {
+.table > :not(caption) > * > * { padding: .45rem .5rem; font-size: .8rem; }
+.table td:first-child, .table th:first-child { white-space: nowrap; }
+.table .badge { font-size: .65rem; white-space: nowrap; }
+.table-responsive { max-height: none; }
+.table-responsive > .table { min-width: 560px; }
+}
+/* --- Tablet: use the width, keep table text readable --- */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+.table > :not(caption) > * > * { padding: .5rem .6rem; font-size: .88rem; }
+.table td:first-child { white-space: nowrap; }
+}
+/* --- Make sure nothing in the workspace can force sideways page scroll --- */
+html, body { overflow-x: hidden; }
+.workspace, .app-sec, .card { max-width: 100%; min-width: 0; }
+img, video, canvas { max-width: 100%; }
+
+/* =====================================================================
+   LAYOUT POLISH v2 — one consistent look for cards, tables, forms, KPIs
+   (keep this block LAST; uses Bootstrap classes only, vendor/ untouched)
+   ===================================================================== */
+:root {
+  --radius: 12px; --radius-sm: 8px;
+  --line-soft: #e3e8ef; --row-alt: #e9eff6; --row-hover: #dce6f2;
+  --muted: #64748b; --shadow-card: 0 1px 2px rgba(15,23,42,.05), 0 4px 14px rgba(15,23,42,.04);
+}
+
+/* ---- Page frame ---- */
+.workspace { padding: 0 1.5rem 2.5rem; }
+.pagebar { padding: 1.25rem 1.5rem 1rem; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.pagebar h1 { font-size: 1.5rem; line-height: 1.25; letter-spacing: -.01em; }
+.pagebar-date { font-size: .78rem; font-weight: 500; white-space: nowrap; }
+
+/* ---- Cards: same radius, border, shadow and header everywhere ---- */
+.card, .rail-card {
+  border: 1px solid var(--line-soft) !important; border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important; background: #fff;
+}
+.card-header { padding: 1rem 1.25rem !important; border-bottom: 1px solid var(--line-soft) !important; background: #fff !important; }
+.card-header :is(h5, h6), .card > :is(h5, h6), .emp-request-card-heading h5,
+.tap-report-title h6, .tap-workforce-head h6 {
+  font-family: inherit !important; font-size: 1.02rem !important; font-weight: 700 !important;
+  letter-spacing: -.005em; color: var(--navy) !important; margin: 0 0 .15rem !important;
+}
+.tap-report-subtitle, .tap-workforce-count, .card-header p.small, .card-header .text-muted.small {
+  font-size: .8rem !important; font-weight: 500 !important; color: var(--muted) !important;
+}
+.card-body { padding: 1.25rem; }
+.card .table-responsive { border-radius: 0 0 var(--radius) var(--radius); }
+.tap-pagination { border-top: 1px solid var(--line-soft); }
+
+/* ---- Tables: calm zebra, readable headers, no cramped wrapping ---- */
+.table { --bs-table-bg: #fff; --bs-table-striped-bg: var(--row-alt); --bs-table-hover-bg: var(--row-hover); --bs-table-border-color: var(--line-soft); }
+.table.table-striped > tbody > tr > *,
+.table.table-striped > tbody > tr:nth-of-type(odd) > * { background-color: #fff !important; --bs-table-bg-type: #fff; --bs-table-accent-bg: #fff; box-shadow: none !important; }
+.table.table-striped > tbody > tr:nth-of-type(even) > * { background-color: var(--row-alt) !important; }
+.table.table-hover > tbody > tr:hover > * { background-color: var(--row-hover) !important; }
+.table > :not(caption) > * > * { border-color: var(--line-soft); vertical-align: middle; }
+.table thead th { font-size: .72rem !important; letter-spacing: .05em; white-space: nowrap; }
+.table tbody td { color: var(--ink); }
+.table tbody td .badge { font-size: .72rem; padding: .35em .65em; }
+.table tbody tr > td[colspan] { background: #fff !important; color: var(--muted); padding: 2rem 1rem !important; text-align: center; }
+.table .text-success.fw-bold, .table .text-danger.fw-bold { font-weight: 600 !important; }
+.table td code, .table td .font-monospace { font-size: .8rem; }
+/* total row stays readable on navy */
+tfoot.table-dark .text-danger { color: #fca5a5 !important; }
+tfoot.table-dark .text-success { color: #86efac !important; }
+tfoot.table-dark td, tfoot.table-dark th { color: #fff; }
+@media (min-width: 768px) {
+  .table > :not(caption) > * > * { padding: .7rem .9rem; }
+  .table-sm > :not(caption) > * > * { padding: .65rem .9rem; }
+  .table.text-nowrap td:first-child, .table.text-nowrap th:first-child { padding-left: 1.25rem; }
+}
+
+/* ---- Forms & buttons ---- */
+.form-control, .form-select { background-color: #fff !important; border: 1px solid #cbd5e1 !important; border-radius: var(--radius-sm) !important; min-height: 40px; }
+textarea.form-control { min-height: 96px; }
+.form-control:focus, .form-select:focus { border-color: var(--brass) !important; box-shadow: 0 0 0 .2rem rgba(176,138,46,.18) !important; }
+.form-label { font-size: .82rem; font-weight: 600; color: #334155; text-transform: none; letter-spacing: 0; margin-bottom: .35rem; }
+.form-text, .form-label .text-muted { font-size: .78rem; }
+.btn { border-radius: var(--radius-sm) !important; padding: .5rem 1rem; }
+.btn-sm { padding: .38rem .8rem; }
+.tap-search-field, .tap-filter-select, .tap-date-range, .tap-clear-btn, .tap-print-btn { border-radius: var(--radius-sm) !important; }
+
+/* ---- Filter bars: same height, tidy spacing, aligned to the title side ---- */
+.tap-filter-bar { gap: .6rem; align-items: center; }
+.tap-report-head, .tap-workforce-head, .tap-emp-header { gap: .85rem 1.25rem; }
+@media (min-width: 768px) {
+  .tap-report-head, .tap-emp-header { align-items: center; }
+  .tap-search-field, .tap-filter-select, .tap-date-range, .tap-clear-btn, .tap-print-btn { min-height: 38px; }
+}
+
+/* ---- KPI cards: employee side matches admin (separate rounded cards) ---- */
+#sec-emp-dtr .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .9rem; background: none; border: 0; }
+#sec-emp-dtr .kpi { background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: .95rem 1.15rem; }
+#sec-emp-dtr .kpi.kpi-accent { background: var(--brass-soft); border-color: #e6d9b0; }
+#sec-admin-dashboard .kpi { border-radius: var(--radius); border-color: var(--line-soft); }
+
+/* ---- Dashboard: full-width table, summary cards side by side underneath ---- */
+#sec-admin-dashboard .rail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+#sec-admin-dashboard .rail-card { padding: 1rem 1.25rem; margin: 0; }
+@media (max-width: 767.98px) { #sec-admin-dashboard .rail { grid-template-columns: 1fr; } }
+.rail-title { font-size: .9rem; font-weight: 700; color: var(--navy); }
+
+/* ---- Profile & request form cards ---- */
+.tap-profile-field { border-radius: var(--radius-sm); background: var(--row-alt); border-color: var(--line-soft); }
+.emp-request-card-heading { border-bottom-color: var(--line-soft); }
+
+/* ---- Phones: keep the polish compact ---- */
+@media (max-width: 575.98px) {
+  .workspace { padding: 0 .75rem 2rem; }
+  .pagebar { padding: 1rem .85rem .6rem; }
+  .pagebar h1 { font-size: 1.3rem !important; }
+  .card-header { padding: .85rem 1rem !important; }
+  .card-body { padding: 1rem; }
+}
+tfoot.table-dark .text-warning { color: #fcd34d !important; }
+
+/* ---- Phone fixes for the polish layer ---- */
+@media (max-width: 575.98px) {
+  #sec-emp-dtr .kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+  #sec-emp-dtr .kpi:first-child { grid-column: 1 / -1; }
+  #sec-emp-dtr .kpi { padding: .75rem .9rem; }
+  #sec-emp-dtr .kpi-value { font-size: 1.2rem; }
+  #sec-admin-dashboard .tap-filter-select, #sec-emp-dtr .tap-filter-select { grid-column: 1 / -1; }
+}
+
+
+/* =====================================================================
+   FIXES (requested): leave box height, approvals control no., reset button
+   ===================================================================== */
+
+/* My Leave Requests: card fits its content instead of stretching to the form's height */
+#sec-emp-leave .emp-leave-layout { align-items: flex-start !important; }
+#sec-emp-leave .emp-leave-layout > [class*="col-"] { align-self: flex-start; }
+#sec-emp-leave .emp-leave-table-card { height: auto !important; }
+
+/* Admin leaves: Approve/Reject buttons fill the status cell like in Approvals */
+#sec-admin-appraisals #adminLeavesBody .approval-actions { margin-top: 0 !important; max-width: 190px; }
+
+/* Approvals (all screen sizes): Control No. column sizes to its content, so long numbers never spill into Employee */
+#sec-admin-approvals table { table-layout: auto !important; }
+#sec-admin-approvals table thead th { width: auto !important; }
+#sec-admin-approvals table th:first-child, #sec-admin-approvals table td:first-child { white-space: nowrap; overflow-wrap: normal; }
+#sec-admin-approvals table th:nth-child(2), #sec-admin-approvals table td:nth-child(2) { min-width: 135px; }
+#sec-admin-approvals table th:nth-child(3), #sec-admin-approvals table td:nth-child(3) { min-width: 130px; overflow-wrap: normal; }
+#sec-admin-approvals table td:nth-child(4) { min-width: 200px; }
+#sec-admin-approvals table th:last-child, #sec-admin-approvals table td:last-child { min-width: 205px; overflow: visible; }
+
+/* Filter bars on phones: the reset button has its own fixed slot (3rd column), so it can never end up alone */
+@media (max-width: 767.98px) {
+  .tap-filter-bar, .tap-emp-tools, .card-header .tap-emp-tools, .card-header .tap-filter-bar,
+  #sec-emp-leave .tap-emp-tools, #sec-admin-workforce .tap-filter-bar,
+  #sec-admin-workforce .tap-workforce-head > .tap-filter-bar {
+    display: grid !important; flex-flow: initial !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 42px !important;
+    gap: .5rem !important; align-items: stretch !important; width: 100% !important;
+  }
+  :is(.tap-filter-bar, .tap-emp-tools) > * { width: auto !important; min-width: 0 !important; max-width: 100% !important; margin: 0 !important; flex: none !important; min-height: 40px; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-search-field { grid-column: span 3 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-search-field:has(+ .tap-clear-btn) { grid-column: span 2 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-filter-select { grid-column: span 3 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-filter-select:has(+ .tap-clear-btn) { grid-column: span 2 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-filter-select:has(+ .tap-filter-select),
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-filter-select + .tap-filter-select { grid-column: span 1 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-date-range { grid-column: span 2 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-print-btn { grid-column: span 3 !important; }
+  :is(.tap-filter-bar, .tap-emp-tools) > .tap-clear-btn,
+  #sec-emp-leave .tap-emp-tools > .tap-clear-btn, #sec-admin-workforce .tap-filter-bar > .tap-clear-btn {
+    grid-column: 3 !important; grid-row: auto !important; width: 42px !important; min-width: 42px !important;
+    height: auto !important; min-height: 40px !important; padding: 0 !important; justify-self: stretch !important; align-self: stretch !important;
+  }
+}

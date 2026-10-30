@@ -1,0 +1,10 @@
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/app/pms/live_data.json
+/.env
+/.phpunit.cache
+.phpunit.result.cache

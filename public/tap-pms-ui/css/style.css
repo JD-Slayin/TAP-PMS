@@ -1,0 +1,124 @@
+/* =========================================================
+   TAP-PMS  |  style.css
+   Concept: a punch-clock timecard / ledger.
+   Paper + ink + one stamp-red. Mono for figures & labels,
+   ruled tables, numbered sections, rubber-stamp statuses,
+   notched ticket for the clock. No sidebar, no rounded
+   SaaS cards, no gradients.
+   ========================================================= */
+@font-face {
+  font-family: 'Inter';
+  src: url('../vendor/fonts/inter-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+:root {
+  --paper: #ECE8DC;          /* page */
+  --sheet: #F8F6EE;          /* panels / inputs */
+  --ink: #17150F;
+  --muted: #6F6A5C;
+  --rule: #CFC9B8;           /* hairlines */
+  --rule-dark: #A9A391;
+  --stamp: #E8461E;          /* the one accent */
+  --stamp-dark: #C2310F;
+  --green: #1F6B3A;
+  --amber: #9A6200;
+  --blue: #1F4E7A;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+  --bg: var(--paper);
+  --bs-primary: #E8461E;
+  --bs-primary-rgb: 232, 70, 30;
+  --bs-body-font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bs-body-color: var(--ink);
+  --bs-body-bg: var(--paper);
+  --bs-border-color: var(--rule);
+  --bs-secondary-color: #6F6A5C;
+  --bs-link-color: #17150F;
+  --bs-link-hover-color: #C2310F;
+}
+body { background: var(--paper); color: var(--ink); font-size: .9rem; -webkit-font-smoothing: antialiased; }
+code { font-family: var(--mono); color: var(--stamp-dark); background: rgba(232,70,30,.1); padding: .05rem .3rem; border-radius: 2px; font-size: .82em; }
+.text-secondary { color: var(--muted) !important; }
+.text-primary { color: var(--stamp-dark) !important; }
+.text-warning { color: var(--amber) !important; }
+.text-danger { color: var(--stamp-dark) !important; }
+::selection { background: var(--stamp); color: #fff; }
+/* ---------- buttons ---------- */
+.btn { border-radius: 2px; font-weight: 600; font-size: .84rem; letter-spacing: 0; }
+.btn-sm { font-size: .78rem; }
+.btn-primary { --bs-btn-color: #F3EFE3; --bs-btn-bg: var(--ink); --bs-btn-border-color: var(--ink); --bs-btn-hover-color: #fff; --bs-btn-hover-bg: var(--stamp-dark); --bs-btn-hover-border-color: var(--stamp-dark); --bs-btn-active-bg: #9d2c10; --bs-btn-active-border-color: #9d2c10; --bs-btn-disabled-bg: var(--ink); --bs-btn-disabled-border-color: var(--ink); --bs-btn-focus-shadow-rgb: 232,70,30; }
+.btn-outline-primary { --bs-btn-color: var(--ink); --bs-btn-border-color: var(--ink); --bs-btn-hover-color: #F3EFE3; --bs-btn-hover-bg: var(--ink); --bs-btn-hover-border-color: var(--ink); --bs-btn-active-bg: var(--stamp-dark); --bs-btn-active-border-color: var(--stamp-dark); --bs-btn-focus-shadow-rgb: 232,70,30; border-width: 1.5px; }
+.btn-outline-secondary { --bs-btn-color: var(--muted); --bs-btn-border-color: var(--rule-dark); --bs-btn-hover-bg: transparent; --bs-btn-hover-color: var(--ink); --bs-btn-hover-border-color: var(--ink); --bs-btn-active-bg: transparent; --bs-btn-active-color: var(--ink); --bs-btn-active-border-color: var(--ink); }
+.btn-success { --bs-btn-bg: var(--green); --bs-btn-border-color: var(--green); --bs-btn-hover-bg: #16522b; --bs-btn-hover-border-color: #16522b; --bs-btn-active-bg: #123f22; --bs-btn-active-border-color: #123f22; }
+.form-control, .form-select { border-radius: 2px; border: 1px solid var(--rule-dark); background-color: var(--sheet); }
+.form-control::placeholder { color: #9d9886; }
+.form-control:focus, .form-select:focus { border-color: var(--ink); background-color: #fff; box-shadow: 0 0 0 3px rgba(232,70,30,.25); }
+.form-label { font-weight: 600; font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: .35rem; }
+/* ---------- login ---------- */
+/* ---------- shell: masthead ---------- */
+#masthead { position: sticky; top: 0; z-index: 1040; background: var(--ink); color: #F3EFE3; border-bottom: 3px solid var(--stamp); }
+.brand { display: flex; align-items: center; gap: .6rem; color: inherit; text-decoration: none; flex: none; }
+#nav { display: flex; align-items: stretch; gap: 1.5rem; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; }
+#nav::-webkit-scrollbar { display: none; }
+#nav li { display: flex; }
+#nav a { position: relative; display: flex; align-items: center; gap: .5rem; color: #a9a391; text-decoration: none; padding: 0 .1rem; font-weight: 600; font-size: .84rem; letter-spacing: .01em; white-space: nowrap; margin-bottom: -3px; border-bottom: 3px solid transparent; }
+#nav a i { display: none; }
+#nav a:hover { color: #fff; }
+#nav a.active { color: #fff; border-bottom-color: #F3EFE3; }
+/* ---------- shell: page ---------- */
+main { min-height: calc(100vh - 61px); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 1.6rem; }
+.content { padding: 1.5rem 0 4rem; counter-reset: sec; }
+@media (max-width: 991.98px) {
+.brand { order: 1; }
+}
+@media (max-width: 575.98px) {
+.wrap { padding-left: 1rem; padding-right: 1rem; }
+}
+/* ---------- sections (cards) ---------- */
+.card { background: var(--sheet); border: 1px solid var(--rule); border-top: 3px solid var(--ink); border-radius: 0; box-shadow: none; }
+.card-header { background: transparent; border: 0; font-weight: 600; font-size: .92rem; text-transform: none; letter-spacing: -.005em; padding: .95rem 1.25rem .3rem; display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+.card-header::before { counter-increment: sec; content: counter(sec, decimal-leading-zero); color: var(--stamp-dark); font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
+.card-header i.bi.text-primary { display: none; }
+.card-body { padding: .9rem 1.25rem 1.25rem; }
+/* ---------- tables: ruled ledger ---------- */
+.table { --bs-table-bg: transparent; margin-bottom: 0; }
+.table > :not(caption) > * > * { padding: .62rem .75rem; border-bottom: 1px dotted var(--rule-dark); vertical-align: middle; }
+.table thead th { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; white-space: nowrap; background: transparent; border-bottom: 2px solid var(--ink); }
+.table tbody tr:last-child > * { border-bottom-style: solid; border-bottom-color: var(--rule-dark); }
+.table tbody tr:hover { background: rgba(232,70,30,.06); }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.empty { text-align: center; color: var(--muted); padding: 2rem 1rem; font-size: .8rem; }
+.empty i { font-size: 1.5rem; display: block; margin-bottom: .4rem; opacity: .4; }
+/* ---------- stat tiles ---------- */
+.stat { display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: flex-start; gap: .9rem; }
+.stat > div:not(.ico) { display: flex; flex-direction: column-reverse; }
+.stat .ico { background: none; font-size: 1.05rem; color: var(--muted); line-height: 1; padding-top: .15rem; }
+.stat .val { font-size: 2.1rem; font-weight: 650; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-top: .55rem; }
+/* ---------- rubber-stamp statuses ---------- */
+.st { display: inline-block; padding: .1rem .42rem; border: 1.5px solid currentColor; border-radius: 2px; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; background: transparent; transform: rotate(-1.5deg); }
+/* ---------- time clock ticket ---------- */
+.bal { text-align: left; padding: .8rem .85rem; border: 1px solid var(--rule); border-left: 3px solid var(--ink); background: transparent; }
+.bal .n { font-size: 1.45rem; font-weight: 650; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.bal .t { font-size: .76rem; color: var(--muted); font-weight: 500; margin-top: .4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.method { font-weight: 700; font-size: .7rem; padding: .15rem .45rem; border-radius: 2px; color: #fff; letter-spacing: .06em; }
+.modal-content { background: var(--sheet); border: 2px solid var(--ink); border-radius: 0; }
+.modal-header, .modal-footer { border-color: var(--rule); }
+.modal-title { font-weight: 700; font-size: 1.05rem; letter-spacing: -.015em; }
+/* ---------- payslip ---------- */
+.slip { background: #fff; color: #222; }
+.slip table { width: 100%; font-size: .88rem; }
+.slip td { padding: .28rem 0; }
+.slip td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.slip h6 { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 .4rem; }
+.slip .tot td { border-top: 1px solid #bbb; font-weight: 700; padding-top: .45rem; }
+@media print {
+body { background: #fff; }
+#masthead, .no-print { display: none !important; }
+main { margin: 0 !important; }
+.wrap { max-width: none; padding: 0; }
+.content { padding: 0 !important; }
+.card { box-shadow: none; border: 1px solid #ddd; }
+body.print-slip .modal, body.print-slip .modal-backdrop { display: none !important; }
+}
+/* stamps inside the dark ticket need lighter ink */
