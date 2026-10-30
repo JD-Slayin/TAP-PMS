@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAP | Time, Attendance and Payroll Management System</title>
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary-dark: #0f172a;
+      --sidebar-width: 260px;
+    }
+    body {
+      background-color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .sidebar {
+      width: var(--sidebar-width);
+      min-height: 100vh;
+      background: #0f172a;
+    }
+    .sidebar .nav-link {
+      color: #94a3b8;
+      border-radius: 0.5rem;
+      margin: 0.2rem 0;
+      padding: 0.65rem 1rem;
+      font-weight: 500;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      color: #ffffff;
+      background: #1e293b;
+    }
+    .badge-soft-success { background: #dcfce7; color: #166534; }
+    .badge-soft-danger { background: #fee2e2; color: #991b1b; }
+    .badge-soft-warning { background: #fef9c3; color: #854d0e; }
+    .badge-soft-primary { background: #dbeafe; color: #1e40af; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printablePayrollArea, #printablePayrollArea * { visibility: visible; }
+      #printablePayrollArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      .no-print { display: none !important; }
+      /* payslip print: only the cloned slip is printed, everything else is removed from the page */
+      body.printing-payslip > *:not(#payslipPrintArea) { display: none !important; }
+      body.printing-payslip #payslipPrintArea, body.printing-payslip #payslipPrintArea * { visibility: visible; }
+      body.printing-payslip #payslipPrintArea { display: block; position: static; max-width: 480px; margin: 0 auto; padding: 24px 0; }
+    }
+    #payslipPrintArea { display: none; }
+  </style>
+  <link rel="stylesheet" href="css/tap-theme.css">
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="loginScreen" class="login-screen">
+    <section class="login-brand">
+      <svg class="login-dial" viewBox="0 0 400 400" aria-hidden="true">
+        <defs><linearGradient id="sweep" gradientUnits="userSpaceOnUse" x1="200" y1="50" x2="85" y2="104"><stop offset="0" stop-color="#b08a2e" stop-opacity=".45"/><stop offset="1" stop-color="#b08a2e" stop-opacity="0"/></linearGradient></defs>
+        <circle cx="200" cy="200" r="190" class="d-ticks"/>
+        <circle cx="200" cy="200" r="184" class="d-hours"/>
+        <circle cx="200" cy="200" r="150" class="d-ring"/>
+        <circle cx="200" cy="200" r="150" class="d-arc"/>
+        <circle cx="200" cy="200" r="104" class="d-ring"/>
+        <g class="d-hand"><path class="d-sweep" d="M200 200 L200 50 A150 150 0 0 0 85.1 103.6 Z"/><line x1="200" y1="200" x2="200" y2="62"/></g>
+        <circle cx="200" cy="200" r="7" class="d-dot"/>
+      </svg>
+      <div class="login-name">
+        <h1 class="login-company">TAP</h1>
+        <p class="login-tag">Time, Attendance and Payroll</p>
+      </div>
+    </section>
+    <section class="login-panel">
+      <form id="formLogin" class="login-form">
+        <h2>Welcome back</h2>
+        <p class="login-sub">Sign in with your employee ID.</p>
+        <label class="form-label" for="loginUsername">Employee ID</label>
+        <div class="field mb-3"><i class="bi bi-person"></i>
+          <input type="text" id="loginUsername" class="form-control" required autofocus autocomplete="username">
+        </div>
+        <label class="form-label" for="loginPassword">Password</label>
+        <div class="field mb-4"><i class="bi bi-lock"></i>
+          <input type="password" id="loginPassword" class="form-control" required autocomplete="current-password">
+          <button type="button" class="eye" id="btnEye" aria-label="Show password"><i class="bi bi-eye"></i></button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100 fs-6">Sign in</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- ================= MAIN APP WORKSPACE ================= -->
+  <div id="appWorkspace" class="d-flex flex-column min-vh-100 d-none">
+
+    <!-- Masthead -->
+    <header class="masthead no-print">
+      <div class="masthead-brand">
+        <span class="tap-wordmark">TAP</span>
+      </div>
+      <div class="masthead-right">
+        <span id="syncBadge" class="badge bg-secondary">Connecting...</span>
+        <div class="user-chip">
+          <div class="text-end lh-sm"><div class="fw-semibold" id="userDisplayName">User</div><div class="role-label" id="sidebarRoleLabel">ROLE: ADMIN</div></div>
+          <span class="badge badge-soft-primary" id="userRoleBadge">Role</span>
+        </div>
+        <button class="btn btn-sm btn-brass" id="btnLogout">Sign out</button>
+      </div>
+    </header>
+
+    <!-- Module ribbon -->
+    <nav class="ribbon no-print">
+      <div id="adminNavGroup" class="ribbon-groups">
+        <div class="ribbon-group"><div class="ribbon-items">
+          <a class="nav-link active" href="#" data-view="admin-dashboard"><i class="bi bi-grid-1x2"></i><span>Overview</span></a>
+          <a class="nav-link" href="#" data-view="admin-workforce"><i class="bi bi-people"></i><span>Workforce &amp; RFID</span></a>
+          <a class="nav-link" href="#" data-view="admin-approvals"><i class="bi bi-check2-square"></i><span>Approvals</span></a>
+        </div></div>
+        <div class="ribbon-group"><div class="ribbon-items">
+          <a class="nav-link" href="#" data-view="admin-payroll"><i class="bi bi-calculator"></i><span>Payroll</span></a>
+          <a class="nav-link" href="#" data-view="admin-appraisals"><i class="bi bi-graph-up-arrow"></i><span>Appraisals &amp; Leaves</span></a>
+        </div></div>
+      </div>
+      <div id="empNavGroup" class="ribbon-groups d-none">
+        <div class="ribbon-group"><div class="ribbon-items">
+          <a class="nav-link active" href="#" data-view="emp-dtr"><i class="bi bi-clock-history"></i><span>My Attendance</span></a>
+          <a class="nav-link" href="#" data-view="emp-requests"><i class="bi bi-send"></i><span>Requests</span></a>
+          <a class="nav-link" href="#" data-view="emp-leave"><i class="bi bi-calendar-plus"></i><span>File a Leave</span></a>
+        </div></div>
+        <div class="ribbon-group"><div class="ribbon-items">
+          <a class="nav-link" href="#" data-view="emp-payslips"><i class="bi bi-receipt"></i><span>Payslips</span></a>
+        </div></div>
+      </div>
+    </nav>
+
+    <!-- Page bar -->
+    <div class="pagebar no-print">
+      <div><div class="crumb"><span id="crumbRole"></span></div><h1 id="navViewTitle">Overview</h1></div>
+      <div class="pagebar-date"><i class="bi bi-calendar3 me-2"></i><span id="todayLabel"></span></div>
+    </div>
+
+    <div class="flex-grow-1 d-flex flex-column">
+      <main class="workspace flex-grow-1">
+
+        <!-- 1. ADMIN DASHBOARD -->
+        <section id="sec-admin-dashboard" class="app-sec">
+          <div class="kpi-strip mb-3">
+            <div class="kpi"><div class="kpi-label">Employees</div><div class="kpi-value" id="statEmployees">0</div></div>
+            <div class="kpi"><div class="kpi-label">Logged attendance</div><div class="kpi-value text-success" id="statPresent">0</div></div>
+            <div class="kpi"><div class="kpi-label">Leaves</div><div class="kpi-value" id="statLeaves">0</div></div>
+            <div class="kpi kpi-accent"><div class="kpi-label">Net payroll</div><div class="kpi-value" id="statPayroll">₱0.00</div></div>
+          </div>
+          <div class="row g-3">
+          <div class="col-xl-9">
+          <div class="card border-0 shadow-sm bg-white">
+            <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+              <h6 class="fw-bold mb-0 text-dark">Daily time records</h6>
+              <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                <span class="small text-muted d-none d-print-inline">Control No: <span id="dtrCtrl" class="fw-bold text-dark"></span></span>
+                <span class="no-print d-flex gap-1"><input type="date" id="dtrFrom" class="form-control form-control-sm"><input type="date" id="dtrTo" class="form-control form-control-sm"><button class="btn btn-sm btn-outline-dark" onclick="window.printDtrReport()"><i class="bi bi-printer"></i></button></span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                  <tr>
+                    <th class="ps-3">Date</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Late (min)</th>
+                    <th>Hours</th>
+                    <th>Status</th>
+                    <th class="no-print">Photo</th>
+                  </tr>
+                </thead>
+                <tbody id="masterDtrBody" class="small"></tbody>
+              </table>
+            <div class="empty-state"><i class="bi bi-clock-history"></i>No attendance recorded yet</div>
+            </div>
+          </div>
+          </div>
+          <div class="col-xl-3">
+            <aside class="rail">
+              <div class="rail-card">
+                <div class="rail-title"><i class="bi bi-bell me-2"></i>To review</div>
+                <a href="#" class="rail-row" data-view="admin-approvals"><span>Requests</span><b id="railReq">0</b></a>
+                <a href="#" class="rail-row" data-view="admin-appraisals"><span>Leaves</span><b id="railLeave">0</b></a>
+                <a href="#" class="rail-row" data-view="admin-payroll"><span>Unreleased payslips</span><b id="railRelease">0</b></a>
+              </div>
+              <div class="rail-card">
+                <div class="rail-title"><i class="bi bi-wallet2 me-2"></i>Current cut-off</div>
+                <div class="rail-period" id="railPeriod">-</div>
+                <div class="rail-row"><span>Gross</span><b id="railGross">₱0.00</b></div>
+                <div class="rail-row"><span>Deductions</span><b id="railDed">₱0.00</b></div>
+                <div class="rail-row rail-total"><span>Net</span><b id="railNet">₱0.00</b></div>
+              </div>
+              <div class="rail-card d-none">
+                <div class="rail-title">Attendance</div>
+                <div class="rail-row"><span>Records</span><b id="railRecords">0</b></div>
+                <div class="rail-row"><span>Late arrivals</span><b id="railLate">0</b></div>
+              </div>
+            </aside>
+          </div>
+          </div>
+        </section>
+
+        <!-- 2. ADMIN WORKFORCE & RFID TAGS MANAGEMENT -->
+        <section id="sec-admin-workforce" class="app-sec d-none">
+          <div class="card border-0 shadow-sm bg-white">
+            <div class="card-header bg-white py-3 border-0">
+              <h6 class="fw-bold mb-0 text-dark">Employees and RFID cards</h6>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                  <tr>
+                    <th class="ps-3">ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                    <th>RFID card</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="workforceTableBody" class="small"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. ADMIN PAYROLL PROCESSING & PRINTABLE REPORT -->
+        <section id="sec-admin-payroll" class="app-sec d-none">
+          <div class="card border-0 shadow-sm p-3 mb-4 bg-white no-print">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label class="form-label small fw-bold">From</label>
+                <input type="date" class="form-control form-control-sm" id="payrollStart" value="2026-10-01">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label small fw-bold">To</label>
+                <input type="date" class="form-control form-control-sm" id="payrollEnd" value="2026-10-15">
+              </div>
+              <div class="col-md-6 d-flex gap-2">
+                <button class="btn btn-sm btn-primary" id="btnFilterPayroll">
+                  Apply
+                </button>
+                <button class="btn btn-sm btn-success" id="btnReleaseAll">
+                  Release payslips
+                </button>
+                <button class="btn btn-sm btn-outline-dark" onclick="window.printPayrollReport()">
+                  Print
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Printable Master Report -->
+          <div id="printablePayrollArea">
+            <div class="card border-0 shadow-sm bg-white mb-4">
+              <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="fw-bold mb-0">Payroll</h5>
+                  <div class="text-muted small"><span id="cutoffLabel">October 01, 2026 - October 15, 2026</span><span class="d-none d-print-inline"> &middot; Control No: <span id="reportCtrl" class="fw-bold"></span></span></div>
+                </div>
+                
+              </div>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                  <thead class="table-light small text-center">
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Basic</th>
+                      <th class="no-print">Gross</th>
+                      <th class="no-print">Overtime</th>
+                      <th>Deductions</th>
+                      <th>Net pay</th>
+                      <th class="no-print">Payslip Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="payrollSummaryBody" class="small"></tbody>
+                  <tfoot class="table-dark fw-bold small">
+                    <tr>
+                      <td colspan="3" class="text-end">Total</td>
+                      <td id="grandBasic" class="text-end">₱0.00</td>
+                      <td id="grandGross" class="text-end no-print">₱0.00</td>
+                      <td id="grandOt" class="text-end no-print">₱0.00</td>
+                      <td id="grandDeductions" class="text-end text-warning">₱0.00</td>
+                      <td id="grandNet" class="text-end text-success fs-6">₱0.00</td>
+                      <td class="no-print"></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. ADMIN APPRAISALS & CONTROL NUMBERS -->
+        <section id="sec-admin-appraisals" class="app-sec d-none">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="card border-0 shadow-sm bg-white h-100">
+                <div class="card-header bg-white py-3 border-0 fw-bold">
+                  Salary changes
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                      <tr>
+                        <th class="ps-3">Employee</th>
+                        <th>Old</th>
+                        <th>New</th>
+                        <th>Effective</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody id="appraisalTableBody" class="small"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card border-0 shadow-sm bg-white h-100">
+                <div class="card-header bg-white py-3 border-0 fw-bold">
+                  Leaves
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                      <tr>
+                        <th class="ps-3">Control No.</th>
+                        <th>Employee</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>File</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminLeavesBody" class="small"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. EMPLOYEE DTR -->
+        <section id="sec-emp-dtr" class="app-sec d-none">
+          <div class="kpi-strip mb-3" id="empSummary"></div>
+          <div class="card border-0 shadow-sm bg-white">
+            <div class="card-header bg-white py-3 border-0 fw-bold">
+              My attendance
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                  <tr>
+                    <th class="ps-3">Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Late (min)</th>
+                    <th>Hours</th>
+                    <th>Status</th>
+                    <th>Photo</th>
+                  </tr>
+                </thead>
+                <tbody id="empPersonalDtrBody" class="small"></tbody>
+              </table>
+            <div class="empty-state"><i class="bi bi-clock-history"></i>No attendance recorded yet</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. EMPLOYEE FILE LEAVE -->
+        <section id="sec-emp-leave" class="app-sec d-none">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="card border-0 shadow-sm bg-white p-4">
+                <h5 class="fw-bold mb-3">Leave request</h5>
+                <form id="formEmpLeave">
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold">Type</label>
+                    <select class="form-select" id="empLeaveType" required>
+                      <option value="Sick Leave">Sick Leave</option>
+                      <option value="Vacation Leave">Vacation Leave</option>
+                      <option value="Emergency Leave">Emergency Leave</option>
+                      <option value="Unpaid Leave">Unpaid Leave</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold">Dates</label>
+                    <div class="input-group"><input type="date" class="form-control" id="empLeaveDate" required><input type="date" class="form-control" id="empLeaveEnd" required></div>
+                    <div class="form-text">Working days: <strong id="empLeaveDays">0</strong></div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold">Reason</label>
+                    <textarea class="form-control" id="empLeaveReason" rows="3"  required></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label small fw-semibold">Attachment (optional, JPG, PNG or PDF)</label>
+                    <input type="file" class="form-control" id="empLeaveProof" accept=".jpg,.jpeg,.png,.pdf">
+                  </div>
+                  <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- REQUESTS: OT / SCHEDULE CHANGE / MANUAL ATTENDANCE -->
+        <section id="sec-emp-requests" class="app-sec d-none">
+          <div class="row g-4">
+            <div class="col-lg-5"><div class="card border-0 shadow-sm bg-white p-3">
+              <form id="formRequest">
+                <select class="form-select mb-2" id="reqKind"><option value="Overtime">Overtime</option><option value="Schedule Change">Schedule change</option><option value="Manual Attendance">Manual Attendance</option></select>
+                <input type="date" class="form-control mb-2" id="reqDate" required>
+                <input type="number" step="0.5" min="0.5" class="form-control mb-2" id="reqHours" placeholder="OT hours">
+                <div id="reqSched" class="d-none mb-2"><select class="form-select mb-2" id="reqSchedType"><option>Work From Home</option><option>Onsite</option></select><input class="form-control" id="reqSchedDays" placeholder="Days (e.g. Monday, Tuesday)"></div>
+                <div id="reqManual" class="d-none mb-2"><div class="input-group"><input type="time" class="form-control" id="reqIn"><input type="time" class="form-control" id="reqOut"></div></div>
+                <textarea class="form-control mb-2" id="reqReason" rows="2" placeholder="Reason" required></textarea>
+                <button class="btn btn-primary w-100">Submit</button>
+              </form></div></div>
+            <div class="col-lg-7"><div class="card border-0 shadow-sm bg-white"><div class="card-header bg-white fw-bold">My requests</div>
+              <div class="table-responsive"><table class="table align-middle mb-0 small"><thead class="table-light"><tr><th class="ps-3">Control No.</th><th>Type</th><th>Details</th><th>Status</th></tr></thead><tbody id="empRequestsBody"></tbody></table></div></div></div>
+          </div>
+        </section>
+
+        <section id="sec-admin-approvals" class="app-sec d-none">
+          <div class="card border-0 shadow-sm bg-white">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center"><span class="fw-bold">Requests <small class="text-muted fw-normal ms-2 d-none d-print-inline">Control No: <span id="apprCtrl" class="fw-bold text-dark"></span></small></span>
+              <div class="d-flex gap-2 no-print"><input type="date" id="apprFrom" class="form-control form-control-sm"><input type="date" id="apprTo" class="form-control form-control-sm"><button class="btn btn-sm btn-outline-dark" onclick="window.printApprovalsReport()"><i class="bi bi-printer"></i></button></div></div>
+            <div class="table-responsive"><table class="table align-middle mb-0 small"><thead class="table-light"><tr><th class="ps-3">Control No.</th><th>Employee</th><th>Type</th><th>Date / Details</th><th>Status</th></tr></thead><tbody id="adminRequestsBody"></tbody></table></div>
+          </div>
+        </section>
+
+        <!-- 7. EMPLOYEE PAYSLIPS -->
+        <section id="sec-emp-payslips" class="app-sec d-none">
+          <div class="card border-0 shadow-sm bg-white">
+            <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+              <h6 class="fw-bold mb-0">Payslips</h6>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small">
+                  <tr>
+                    <th class="ps-3">Cut-off Period</th>
+                    <th>Gross</th>
+                    <th>Deductions</th>
+                    <th>Net pay</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="empPersonalPayslipsBody" class="small"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: ASSIGN / EDIT RFID CARD UID -->
+  <div class="modal fade" id="rfidAssignModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white">
+          <h6 class="modal-title fw-bold">
+            RFID card
+          </h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="formAssignRfid">
+          <div class="modal-body p-4">
+            <input type="hidden" id="editEmpId">
+
+            <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3 mb-3">
+              <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 48px; height: 48px;" id="editEmpAvatar">
+                EM
+              </div>
+              <div>
+                <h6 class="mb-0 fw-bold" id="editEmpName">Juan Dela Cruz</h6>
+                <span class="text-muted small" id="editEmpSub">EMP-001 | Software Engineer</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-secondary">Card UID</label>
+              <input type="text" class="form-control" id="editRfidTagInput" required autofocus>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm px-3">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ATTENDANCE PHOTO PROOF -->
+  <div class="modal fade" id="proofModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white">
+          <h6 class="modal-title fw-bold">Attendance photo</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center p-4">
+          <div class="row g-2 mb-3">
+            <div class="col-6" id="proofBoxIn"><div class="small fw-semibold text-success mb-1">In</div><img id="proofModalImgIn" class="img-fluid rounded-3 border shadow-sm" alt="Time-in photo"><div class="proof-ph d-none small text-muted border rounded-3 p-4 bg-light">No photo</div></div>
+            <div class="col-6" id="proofBoxOut"><div class="small fw-semibold text-danger mb-1">Out</div><img id="proofModalImgOut" class="img-fluid rounded-3 border shadow-sm" alt="Time-out photo"><div class="proof-ph d-none small text-muted border rounded-3 p-4 bg-light">No photo</div></div>
+          </div>
+          <div class="text-start bg-light p-3 rounded small">
+            <div><strong>Employee:</strong> <span id="proofModalName">--</span></div>
+            <div><strong>Timestamp:</strong> <span id="proofModalTime">--</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: OFFICIAL PAYSLIP VOUCHER -->
+  <div class="modal fade" id="payslipModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white">
+          <h6 class="modal-title fw-bold">Payslip</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="payslipBody">
+          <div class="p-3 border rounded font-monospace bg-white">
+            <div class="text-center pb-2 border-bottom mb-3">
+              <h5 class="fw-bold mb-0">TAP</h5>
+              <div class="small text-muted">October 01 - 15, 2026</div>
+            </div>
+            <div class="row small mb-2">
+              <div class="col-6"><strong>Emp ID:</strong> <span id="psEmpId">EMP-001</span></div>
+              <div class="col-6 text-end"><strong>Name:</strong> <span id="psEmpName">Juan Dela Cruz</span></div>
+              <div class="col-6"><strong>Position:</strong> <span id="psEmpRole">Software Engineer</span></div>
+              <div class="col-6 text-end"><strong>Basic Rate:</strong> <span id="psEmpBase">₱35,000.00</span></div>
+            </div>
+            <table class="table table-sm table-borderless small my-3">
+              <thead class="border-bottom">
+                <tr><th>Earnings</th><th class="text-end">Amount</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Semi-Monthly Base</td><td class="text-end" id="psGross">₱17,500.00</td></tr>
+                <tr><td>Overtime Pay</td><td class="text-end text-success" id="psOt">+₱0.00</td></tr>
+              </tbody>
+              <thead class="border-bottom border-top">
+                <tr><th>Deductions</th><th class="text-end">Amount</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Late</td><td class="text-end text-danger" id="psLate">-₱0.00</td></tr>
+                <tr><td>SSS, PhilHealth, Pag-IBIG</td><td class="text-end text-danger" id="psGov">-₱1,250.00</td></tr>
+                <tr><td>Tax and loans</td><td class="text-end text-danger" id="psTax">-₱500.00</td></tr>
+                 <tr><td>Unpaid Leave</td><td class="text-end text-danger" id="psLeave">-₱0.00</td></tr>
+              </tbody>
+            </table>
+            <div class="border-top pt-2 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">Net pay</span>
+              <span class="fs-5 fw-bold text-success" id="psNet">₱15,750.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="window.printPayslip()">Print</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ems.js"></script>
+  <script src="js/app.js"></script>
+  <script>document.getElementById("btnEye").addEventListener("click",function(){var p=document.getElementById("loginPassword"),s=p.type==="password";p.type=s?"text":"password";this.firstElementChild.className=s?"bi bi-eye-slash":"bi bi-eye";});</script>
+</body>
+</html>

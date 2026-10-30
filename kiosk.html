@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAP Kiosk</title>
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons.min.css">
+  <style>
+    @font-face { font-family: 'Inter'; src: url('vendor/fonts/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+    :root { --navy: #12263f; --navy-2: #1a3454; --line: #2c4666; --brass: #b08a2e; --muted: #9fb2cb; }
+    body { background: var(--navy); color: #fff; min-height: 100vh; display: flex; flex-direction: column; font-family: 'Inter', system-ui, sans-serif; user-select: none; }
+    .k-head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 3px solid var(--brass); }
+    .k-brand { display: flex; align-items: center; gap: .85rem; }
+    .tap-wordmark { font-weight: 800; letter-spacing: .12em; font-size: 1.3rem; line-height: 1; }
+    .brand-co { font-size: .9rem; color: #c3cfdf; padding-left: .85rem; border-left: 1px solid #3a5a86; }
+    .k-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1.5rem; padding: 1.5rem 2rem 2rem; align-items: stretch; }
+    .k-panel { background: var(--navy-2); border: 1px solid var(--line); border-radius: 4px; }
+    .k-clock { padding: 2rem 2rem 1.25rem; border-bottom: 1px solid var(--line); }
+    .digital-clock { font-size: 4.5rem; font-weight: 700; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .k-date { color: var(--muted); font-size: 1.1rem; margin-top: .5rem; }
+    .scan-target { min-height: 300px; display: flex; align-items: center; padding: 2rem; border-left: 5px solid transparent; transition: border-color .2s, background-color .2s; }
+    .scan-target.state-in { border-left-color: #3fae7a; background: rgba(63,174,122,.08); }
+    .scan-target.state-out { border-left-color: #d99a2b; background: rgba(217,154,43,.08); }
+    .photo-frame { width: 96px; height: 96px; object-fit: cover; border: 2px solid #fff; }
+    .k-panel h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem; }
+    .k-input { max-width: 340px; }
+    .pulse { position: relative; width: 120px; height: 120px; flex: none; display: grid; place-items: center; font-size: 2.6rem; color: var(--brass); }
+    .pulse::before, .pulse::after { content: ""; position: absolute; inset: 0; border: 2px solid var(--brass); border-radius: 50%; animation: wave 2.6s ease-out infinite; }
+    .pulse::after { animation-delay: 1.3s; }
+    .pulse i { position: relative; width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; background: rgba(176,138,46,.16); border: 1px solid var(--brass); }
+    @keyframes wave { from { transform: scale(.65); opacity: .9; } to { transform: scale(1.15); opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .pulse::before, .pulse::after { animation: none; opacity: .4; } }
+    .k-clock { background: linear-gradient(90deg, #12263f 0, var(--navy-2) 100%); }
+    .k-panel { box-shadow: 0 12px 32px rgba(0,0,0,.28); }
+    .k-log tbody tr:nth-child(odd) td { background: rgba(255,255,255,.03); }
+    .k-input .form-control { background: #0f2036; border-color: var(--line); color: #fff; }
+    .k-input .form-control::placeholder { color: #6b819e; }
+    .k-input .btn-primary { background: var(--brass); border-color: var(--brass); color: #12263f; font-weight: 700; }
+    .k-status { font-size: .8rem; color: var(--muted); min-height: 1.2em; margin-top: .5rem; }
+    .k-log-head { display: flex; justify-content: space-between; align-items: baseline; padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--line); }
+    .k-log-head h6 { margin: 0; font-weight: 700; }
+    .k-log .table { --bs-table-bg: transparent; --bs-table-color: #fff; margin: 0; }
+    .k-log th { font-size: .78rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .k-log td { border-color: var(--line); }
+    .cam-preview { width: 160px; aspect-ratio: auto 4 / 3; object-fit: cover; transform: scaleX(-1); background: #000; }
+    @media (max-width: 991px) {
+      .k-main { grid-template-columns: 1fr; padding: 1rem; } .k-head { padding: .85rem 1rem; } .digital-clock { font-size: 3.2rem; }
+      .k-clock { padding: 1.25rem 1.25rem 1rem; }
+      .scan-target { min-height: 0; padding: 1rem; }
+      /* phone: camera is the first thing in the panel and takes the full width */
+      .idle-row { display: block !important; }
+      .pulse { display: none; }
+      .idle-body { display: flex; flex-direction: column; }
+      .cam-row { display: contents; }
+      .cam-preview { order: -1; width: 200px; max-width: 70%; max-height: 32vh; align-self: center; margin-bottom: .85rem; }
+      .idle-body h2 { font-size: 1.35rem; margin-bottom: .75rem; }
+      .k-input { max-width: none; }
+      #btnEnableNfc { align-self: flex-start; padding: .5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="k-head">
+    <div class="k-brand"><span class="tap-wordmark">TAP</span></div>
+    <span id="syncBadge" class="badge bg-secondary">Connecting...</span>
+  </header>
+
+  <main class="k-main">
+    <section class="k-panel">
+      <div class="k-clock">
+        <div class="digital-clock" id="liveClockDisplay">00:00:00 AM</div>
+        <div class="k-date" id="liveDateDisplay"></div>
+      </div>
+
+      <div class="scan-target" id="kioskBox">
+        <div id="idleDisplay" class="w-100">
+          <div class="idle-row d-flex align-items-center gap-4">
+          <div class="pulse"><i class="bi bi-broadcast"></i></div>
+          <div class="idle-body flex-grow-1">
+          <h2>Tap your card</h2>
+          <div class="k-input input-group mb-2">
+            <input type="text" id="kioskScanBuffer" class="form-control" placeholder="Card UID" autocomplete="off" autofocus>
+            <button class="btn btn-primary" type="button" id="btnManualSubmit">Tap</button>
+          </div>
+          <div class="cam-row d-flex align-items-center gap-3 mt-3">
+            <button type="button" class="btn btn-outline-light btn-sm" id="btnEnableNfc">Enable reader</button>
+            <video id="camPreview" autoplay playsinline muted class="cam-preview rounded border border-secondary"></video>
+          </div>
+          <div id="nfcLiveStatus" class="k-status"></div>
+          <div id="camStatus" class="k-status mt-0"></div>
+          <canvas id="camCanvas" class="d-none"></canvas>
+          </div></div>
+        </div>
+
+        <div id="verifyDisplay" class="d-none w-100">
+          <div class="d-flex align-items-center gap-4">
+            <img id="empVerifyImg" src="" class="rounded-circle photo-frame" alt="">
+            <div>
+              <h2 class="mb-0" id="empVerifyName">--</h2>
+              <div class="text-secondary mb-2" id="empVerifyRole">--</div>
+              <div class="d-flex gap-2 align-items-center">
+                <span class="badge fs-6" id="empVerifyActionBadge"></span>
+                <span class="badge fs-6" id="empVerifyStatusBadge"></span>
+              </div>
+              <div id="verifyNote" class="small mt-2" style="color:#5fd0a0">Recorded</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="k-panel k-log">
+      <div class="k-log-head"><h6>Recent taps</h6><span class="small text-secondary" id="totalPunchesBadge">0</span></div>
+      <div class="table-responsive" style="max-height: 460px;">
+        <table class="table table-borderless align-middle">
+          <thead><tr><th class="ps-3">Time</th><th>Employee</th><th>Event</th><th>Status</th></tr></thead>
+          <tbody id="recentPunchesBody" class="small"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="js/store.js"></script>
+  <script>
+    function updateKioskClock() {
+      const now = new Date();
+      document.getElementById('liveClockDisplay').innerText = now.toLocaleTimeString('en-US');
+      document.getElementById('liveDateDisplay').innerText = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    setInterval(updateKioskClock, 1000);
+    updateKioskClock();
+
+    function renderPunchesStream() {
+      const dtr = PMSStore.getDTR();
+      const tbody = document.getElementById('recentPunchesBody');
+      tbody.innerHTML = '';
+
+      dtr.slice(0, 8).forEach(r => {
+        const isOut = r.timeOut && r.timeOut !== '--';
+        const evTime = isOut ? r.timeOut : r.timeIn;
+        const evType = isOut ? 'OUT' : 'IN';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="ps-3 fw-semibold">${evTime}</td>
+          <td>
+            <div class="fw-semibold">${r.name}</div>
+            <div class="text-secondary" style="font-size: 0.75rem;">${r.empId}</div>
+          </td>
+          <td><span class="badge ${evType === 'IN' ? 'bg-success' : 'bg-warning text-dark'}">${evType === 'IN' ? 'In' : 'Out'}</span></td>
+          <td><span class="badge ${r.status.includes('Late') ? 'bg-danger' : 'bg-secondary'}">${r.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('totalPunchesBadge').innerText = dtr.length;
+    }
+
+    // ---------- LIVE PHOTO PROOF (camera) ----------
+    const REQUIRE_PHOTO = true;   // true = no camera means no punch. false = allow punch without a picture
+    let camStream = null;
+    async function startCamera() {
+      const el = document.getElementById("camStatus");
+      try {
+        if (camStream) return true;
+        camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
+        const v = document.getElementById("camPreview");
+        v.srcObject = camStream;
+        await v.play();
+        el.style.color = "#5fd0a0"; el.innerText = "Camera on";
+        return true;
+      } catch (err) {
+        el.style.color = "#ff8a8a";
+        el.innerText = "Camera error: " + err.name;
+        return false;
+      }
+    }
+    function capturePhoto() {
+      const v = document.getElementById("camPreview");
+      if (!camStream || !v.videoWidth) return null;
+      const w = 480, h = Math.round(w * v.videoHeight / v.videoWidth);
+      const c = document.getElementById("camCanvas");
+      c.width = w; c.height = h;
+      const ctx = c.getContext("2d");
+      ctx.drawImage(v, 0, 0, w, h);
+      return c.toDataURL("image/jpeg", 0.6);   // ~30-60KB
+    }
+    async function uploadPhoto(dataUrl, name) {
+      for (let i = 0; i < 3; i++) {
+        try {
+          const r = await fetch("upload.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, data: dataUrl }) });
+          const j = await r.json();
+          if (j.ok) return j.path;
+        } catch (e) {}
+        await new Promise(res => setTimeout(res, 500));
+      }
+      return null;
+    }
+
+    async function executePunch(cardUid) {
+      if (!cardUid) return;
+      const norm = x => String(x || '').replace(/[^0-9a-z]/gi, '').toLowerCase();   // 04:A1:B2 = 04a1b2
+      const cleanUid = norm(cardUid);
+      const employees = PMSStore.getEmployees();
+      const emp = employees.find(e => e.nfcTag && norm(e.nfcTag) === cleanUid);
+
+      if (!emp) {
+        alert("Card not registered.");
+        return;
+      }
+
+      if (emp.status !== "Active") {
+        alert(`${emp.name} is ${emp.status}.`);
+        return;
+      }
+
+      // guard: isang IN at isang OUT lang kada araw, may 60s cooldown
+      const _n = new Date(), _today = _n.getFullYear() + "-" + String(_n.getMonth() + 1).padStart(2, "0") + "-" + String(_n.getDate()).padStart(2, "0");
+      const _rec = PMSStore.getDTR().find(r => r.empId === emp.id && r.date === _today);
+      if (_rec && _rec.timeOut && _rec.timeOut !== "--") { alert(`${emp.name}: already timed out today.`); return; }
+      if (_rec && Date.now() - (_rec._ts || 0) < 60000) { alert("Wait 1 minute before timing out."); return; }
+
+      // kuhanan agad ng picture sa mismong tap
+      const shot = capturePhoto();
+      if (!shot && REQUIRE_PHOTO) {
+        alert("Camera required. Press Enable reader first.");
+        return;
+      }
+
+      const now = new Date();
+      const todayStr = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0") + "-" + String(now.getDate()).padStart(2, "0");   // local date, not UTC
+      const timeStr = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+      const currentHour = now.getHours();
+      const currentMin = now.getMinutes();
+
+      const dtrList = PMSStore.getDTR();
+      let record = dtrList.find(r => r.empId === emp.id && r.date === todayStr);
+
+      let action = "IN";
+      let status = "On-Time";
+
+      if (!record) {
+        action = "IN";
+        let lateMins = 0;
+        if (currentHour > 8 || (currentHour === 8 && currentMin > 15)) {
+          lateMins = ((currentHour - 8) * 60) + currentMin;
+          status = `Late (${lateMins}m)`;
+        }
+
+        record = {
+          date: todayStr,
+          empId: emp.id,
+          name: emp.name,
+          timeIn: timeStr,
+          timeOut: "--",
+          lateMinutes: lateMins,
+          renderedHours: 0,
+          overtimeHours: 0,
+          status: status,
+          photoIn: null,
+          photoOut: null,
+          photoProof: emp.photoUrl   // profile photo, fallback lang
+        };
+      } else {
+        action = "OUT";
+        record.timeOut = timeStr;
+        let totalHrs = (currentHour - 8) + (currentMin / 60) - 1;
+        record.renderedHours = totalHrs > 0 ? parseFloat(totalHrs.toFixed(1)) : 0;
+        if (currentHour >= 17) {
+          record.overtimeHours = currentHour - 17;
+          status = record.overtimeHours > 0 ? `Completed (+${record.overtimeHours}h OT)` : "Completed";
+        } else {
+          status = "Early Out";
+        }
+        record.status = status;
+      }
+
+      // i-upload ang picture, tapos ilagay ang path sa record
+      const stamp = now.getHours().toString().padStart(2, "0") + now.getMinutes().toString().padStart(2, "0") + now.getSeconds().toString().padStart(2, "0");
+      const fname = `${todayStr}_${emp.id}_${action}_${stamp}.jpg`;
+      let savedPath = null;
+      if (shot) {
+        savedPath = await uploadPhoto(shot, fname);
+        if (!savedPath && REQUIRE_PHOTO) {
+          alert("Photo upload failed. Tap again.");
+          return;
+        }
+      }
+      if (action === "IN") record.photoIn = savedPath; else record.photoOut = savedPath;
+      record.photoProof = savedPath || record.photoIn || record.photoProof;
+
+      // I-save sa local at ipadala agad sa sync.php server
+      PMSStore.saveDTRRecord(record);
+
+      const targetBox = document.getElementById("kioskBox");
+      const idle = document.getElementById("idleDisplay");
+      const verify = document.getElementById("verifyDisplay");
+
+      document.getElementById("empVerifyName").innerText = emp.name;
+      document.getElementById("empVerifyRole").innerText = `${emp.role} (${emp.id})`;
+      document.getElementById("empVerifyImg").src = shot || emp.photoUrl;
+
+      const actBadge = document.getElementById("empVerifyActionBadge");
+      actBadge.className = action === "IN" ? "badge bg-success fs-6" : "badge bg-warning text-dark fs-6";
+      actBadge.innerText = `${action === "IN" ? "In" : "Out"} ${timeStr}`;
+
+      const statBadge = document.getElementById("empVerifyStatusBadge");
+      statBadge.className = status.includes("Late") ? "badge bg-danger fs-6" : "badge bg-secondary fs-6";
+      statBadge.innerText = status;
+
+      targetBox.className = `scan-target ${action === 'IN' ? 'state-in' : 'state-out'}`;
+      idle.classList.add("d-none");
+      verify.classList.remove("d-none");
+
+      setTimeout(() => {
+        targetBox.className = "scan-target";
+        idle.classList.remove("d-none");
+        verify.classList.add("d-none");
+        const buf = document.getElementById("kioskScanBuffer");
+        buf.value = "";
+        buf.focus();
+      }, 3500);
+
+      renderPunchesStream();
+    }
+
+    const scanBuffer = document.getElementById("kioskScanBuffer");
+    scanBuffer.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" && scanBuffer.value) {
+        executePunch(scanBuffer.value);
+      }
+    });
+
+    document.getElementById("btnManualSubmit").addEventListener("click", () => {
+      if (scanBuffer.value) executePunch(scanBuffer.value);
+    });
+
+    // Web NFC Reader para sa Phone
+    document.getElementById("btnEnableNfc").addEventListener("click", async () => {
+      startCamera();
+      const statusEl = document.getElementById("nfcLiveStatus");
+      if ('NDEFReader' in window) {
+        try {
+          const ndef = new NDEFReader();
+          await ndef.scan();
+          statusEl.style.color = "#5fd0a0";
+          statusEl.innerText = "Reader on";
+          ndef.onreadingerror = () => { statusEl.style.color = "#ff8a8a"; statusEl.innerText = "Card unreadable."; };
+          ndef.onreading = event => {
+            if (!event.serialNumber) { statusEl.style.color = "#ff8a8a"; statusEl.innerText = "No serial number on card."; return; }
+            executePunch(event.serialNumber);
+          };
+        } catch (err) {
+          statusEl.style.color = "#ff8a8a";
+          statusEl.innerText = "Reader error: " + err.message;
+        }
+      } else {
+        statusEl.style.color = "#e8c15a";
+        statusEl.innerText = "NFC not available. Type the UID.";
+      }
+    });
+
+    // Live Sync Polling bawat 1.5s
+    setInterval(() => {
+      PMSStore.pullFromServer(() => {
+        renderPunchesStream();
+      });
+    }, 1500);
+
+    PMSStore.pullFromServer(() => renderPunchesStream());
+    renderPunchesStream();
+  </script>
+</body>
+</html>
